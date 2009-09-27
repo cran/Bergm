@@ -8,7 +8,10 @@ Bayesian goodness-of-fit diagnostics
 Calculates summaries for degree, minimum geodesic distances, and edge-wise shared partner distributions to diagnose the Bayesian goodness-of-fit of exponential family random graph models.
 }
 \usage{
-bgof(out, directed = FALSE, lag = 100, n.sim = NULL, burn.in = 10000, n.deg = NULL, n.dist = NULL, n.esp = NULL, n.ideg = NULL, n.odeg = NULL, save = FALSE)
+bgof(out, directed = FALSE, lags = 100, n.sim = NULL, 
+aux.iter = 10000, n.deg = NULL, n.dist = NULL, 
+n.esp = NULL, n.ideg = NULL, n.odeg = NULL, 
+save = FALSE)
 }
 \arguments{
   \item{out}{
@@ -17,14 +20,14 @@ bgof(out, directed = FALSE, lag = 100, n.sim = NULL, burn.in = 10000, n.deg = NU
   \item{directed}{
 logical; TRUE if the observed graph is directed
 }
-  \item{lag}{
-count; interval between each sampled posterior parameter estimate
+  \item{lags}{
+count; interval between each sampled posterior parameter value
 }
   \item{n.sim}{
 count; number of sampled parameter values 
 }
-  \item{burn.in}{
-count; number of iterations used for each graph simulation
+  \item{aux.iter}{
+count; number of iterations used for network simulation
 }
   \item{n.deg}{
 count; used to plot only the first \code{n.deg-1} degree distributions
@@ -45,18 +48,6 @@ count; used to plot only the first \code{n.odeg-1} out-degree distributions
 logical; if TRUE a file called "bgof.out" is saved in the working directory
 }
 }
-\examples{
-data(florentine)
-
-flo1 <- bergm(flobusiness~edges+kstar(2),main.iter=15000,
-sdprop=c(1,0.1),sdprior=20,theta=c(-2,0.1))
-
-## Bayesian goodness-of-fit test 
-
-bgof(flo1,lag=150,n.sim=100)
-
-## Let's improve the plots
-
-bgof(flo1,lag=150,n.sim=100,n.deg=10,n.dist=9,n.esp=6)
-
+\seealso{
+\code{\link{bergm}}
 }

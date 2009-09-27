@@ -1,30 +1,21 @@
-bgof <-
-function(out,directed=FALSE,
-		     lag=100,
-		     n.sim=NULL,
-		     burn.in=10000,
-		     n.deg=NULL,
-		     n.dist=NULL,
-		     n.esp=NULL,
-		     n.ideg=NULL,
-		     n.odeg=NULL,
-		     save=FALSE
-		     ){
+bgof = function(out,directed=FALSE,lags=100,n.sim=NULL,
+	aux.iter=10000,n.deg=NULL,n.dist=NULL,n.esp=NULL,
+	n.ideg=NULL,n.odeg=NULL,save=FALSE){
 				 	
-	if(is.null(n.sim)) n.sim <- floor((out$iter*out$chains)/lag) 
+	if(is.null(n.sim)) n.sim <- floor((out$iter*out$chains)/lags) 
 	F <- as.matrix(out$theta[,1:out$dim])
 	if(out$chains >= 2){
 		for(h in 2:out$chains){
 			F <- rbind(F,out$theta[,((out$dim*(h-1)+1)):(out$dim*h)])
 		}
 	}
-	F <- as.matrix(F[seq(1,(out$iter*out$chains),lag),])
+	F <- as.matrix(F[seq(1,(out$iter*out$chains),lags),])
 
+if(directed==FALSE){
 # undirected
-if(directed==FALSE){	
 	for(i in 1:n.sim){
 		a <- gof(out$mod,
-       		 	 nsim=1,burnin=burn.in,
+       		 	 nsim=1,burnin=aux.iter,
        			 theta0=F[i,],verbose=FALSE)
 	 	if(i==1) A<-as.vector(a$pobs.deg)
 	 	A<-cbind(A,as.vector(a$psim.deg))
@@ -72,11 +63,12 @@ if(directed==FALSE){
 		     obs.degree=A[,1],obs.dist=B[,1],obs.esp=C[,1],fun=F)
     if(save==TRUE) dput(out,"bgof.out")
 
+	
 }else{ 
 # directed
 	for(i in 1:n.sim){
 		a <- gof(out$mod,
-       		 	 nsim=1,burnin=burn.in,
+       		 	 nsim=1,burnin=aux.iter,
        			 theta0=F[i,],verbose=FALSE,
        			 GOF=~idegree+odegree+espartners+distance)
 	 	if(i==1) A<-as.vector(a$pobs.ideg)
@@ -133,10 +125,10 @@ if(directed==FALSE){
       lines(c5,col="darkgray")
 	lines(c95,col="darkgray")
 
-	out = list(sim.idegree=A[,-1],sim.odegree=AA[,-1],sim.dist=B[,-1],sim.esp=C[,-1],
-		     obs.degree=A[,1],obs.dist=B[,1],obs.esp=C[,1],fun=F)
+	out = list(sim.idegree=A[,-1],
+			   sim.odegree=AA[,-1],sim.dist=B[,-1],sim.esp=C[,-1],
+			   obs.degree=A[,1],obs.dist=B[,1],obs.esp=C[,1],fun=F)
     if(save==TRUE) dput(out,"bgof.out")
 	
 }      
 }
-
