@@ -1,5 +1,5 @@
 \name{bergm}
-\Rdversion{1.1}
+\Rdversion{1.2}
 \alias{bergm}
 \title{
 Bayesian exponential random graph models
@@ -11,7 +11,7 @@ or population MCMC with snooker update.
 }
 \usage{
 bergm(model, burn.in = 0, main.iter = 5000, aux.iter = 1000, 
-sdprop = NULL, sdprior = 50, mprior = 0, 
+sdprop = NULL, sdprior = NULL, mprior = NULL, 
 theta = NULL, popMCMC = TRUE, nchains = NULL, 
 gamma = 1, sdepsilon = 0.05, save = FALSE)
 }
@@ -50,7 +50,7 @@ count; number of chains for population MCMC
 scalar; snooker factor
 }
   \item{sdepsilon}{
-vector; standard deviation for the snooker update parameter (epsilon)
+parameter; standard deviation for the snooker update parameter (epsilon)
 }
   \item{save}{
 logical; if TRUE a file called "bergm.out" is saved in the working directory

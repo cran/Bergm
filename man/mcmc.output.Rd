@@ -1,5 +1,5 @@
 \name{mcmc.output}
-\Rdversion{1.1}
+\Rdversion{1.2}
 \alias{mcmc.output}
 \title{
 MCMC output diagnostics

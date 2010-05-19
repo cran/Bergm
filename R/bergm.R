@@ -1,16 +1,15 @@
 bergm <- function(model,burn.in=0,
 	main.iter=5000,aux.iter=1000,
-	sdprop=NULL,sdprior=50,mprior=0,
+	sdprop=NULL,sdprior=NULL,mprior=NULL,
 	theta=NULL,popMCMC=TRUE,nchains=NULL,
 	gamma=1,sdepsilon=0.05,
 	save=FALSE){
-
 		
 	mod <- ergm.getmodel(model,ergm.getnetwork(model))
     stat <- ergm.getglobalstats(ergm.getnetwork(model),mod)
     mrow <- length(stat)
-		
-
+    if (is.null(sdprior)){ sdprior <- rep(10,mrow) }
+	if (is.null(mprior)){ mprior <- rep(0,mrow) }	
 	if(popMCMC==FALSE){
         mcol <- mrow
         H <- matrix(0,main.iter,mrow)
@@ -28,7 +27,6 @@ bergm <- function(model,burn.in=0,
 			}
     }
 		
-		
     iter <- burn.in + main.iter
     pr <- rep(0,mrow)
     thetad <- theta
@@ -37,8 +35,9 @@ bergm <- function(model,burn.in=0,
         for (h in 1:mcol){
             if (popMCMC == FALSE){
                 thetad[h] <- rnorm(1,theta[h],sdprop[h])
-                pr <- dnorm(c(theta,thetad),mprior,sdprior)
-                prr <- prod(pr[1:mrow] / pr[1:mrow])
+                pr <- dnorm(c(theta),mprior,sdprior)
+                prd <- dnorm(c(thetad),mprior,sdprior)
+                prr <- prod(prd / pr)
                 yd <- simulate(model,theta0=thetad,burnin=aux.iter)
                 delta <- ergm.getglobalstats(yd,mod) - stat
                 beta <- t(theta - thetad) %*% delta + log(prr)
@@ -51,8 +50,9 @@ bergm <- function(model,burn.in=0,
                 thetad[,h] <- theta[,h] + gamma * 
                     apply(theta[,sample(seq(1,mcol)[-h],2)],1,diff) + 
                     rnorm(mrow,0,sdepsilon)
-                pr <- dnorm(c(theta[,h],thetad[,h]),mprior,sdprior)
-                prr <- prod(pr[1:mrow] / pr[1:mrow])
+                pr <- dnorm(c(theta),mprior,sdprior)
+                prd <- dnorm(c(thetad),mprior,sdprior)
+                prr <- prod(prd / pr)
                 yd <- simulate(model,theta0=thetad[,h],burnin=aux.iter)
                 delta <- ergm.getglobalstats(yd, mod) - stat
                 beta <- t(theta[,h] - thetad[,h]) %*% delta + log(prr)
@@ -67,7 +67,7 @@ bergm <- function(model,burn.in=0,
         if (k > burn.in) H[k-burn.in,] <- theta
     }
     out = list(theta=H,dim=mrow,chains=nchains,iter=main.iter, 
-        rate=(accept / main.iter),mod=model)
+               rate=(accept / main.iter),mod=model)
     if (save == TRUE){ dput(out,"bergm.out") }
     out
 }
