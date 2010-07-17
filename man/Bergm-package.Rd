@@ -1,15 +1,15 @@
 \name{Bergm-package}
-\Rdversion{1.2}
+\Rdversion{1.4}
 \alias{Bergm-package}
 \docType{package}
 \title{
-Bayesian inference for exponential random graph models
+Bayesian inference for exponential random graph models.
 }
 \description{
 \code{Bergm} is a collection of functions to fit and diagnose from Bayesian random graph models. For a list of functions type: help(package='Bergm').
 }
 \author{
-Alberto Caimo <alberto.caimo@ucd.ie> and Nial Friel <nial.friel@ucd.ie>
+Alberto Caimo <alberto.caimo@ucd.ie> and Nial Friel <nial.friel@ucd.ie>.
 }
 
 \references{

@@ -1,5 +1,5 @@
 \name{mcmc.output}
-\Rdversion{1.2}
+\Rdversion{1.4}
 \alias{mcmc.output}
 \title{
 MCMC output diagnostics
@@ -8,22 +8,25 @@ MCMC output diagnostics
 This function returns the posterior density estimate and creates simple diagnostic plots for the MCMC produced from a fit. 
 }
 \usage{
-mcmc.output(out, lags = 100, chain = 1, posterior = TRUE)
+mcmc.output(out, 
+            lags = 100, 
+            chain = 0)
 }
 \arguments{
   \item{out}{ 
-  \code{bergm} output
+  an \code{R} object of class \code{bergm}.
 }
   \item{lags}{
-count; number of lags for the autocorrelation plots
+count; number of lags for the autocorrelation plots.
 }
   \item{chain}{
-count; used to plot the MCMC output for the selected chain
+count; used to plot the MCMC output of the selected chain (only for population MCMC).
 }
-  \item{posterior}{
-logical; if TRUE the MCMC output for the overall posterior density
 }
+\value{
+\item{posterior}{matrix containing the MCMC output for the main chain.}
+\item{dim}{model dimensions.}
 }
 \seealso{
-  \code{\link{bergm}}
+  \code{\link{bergm}}.
 }
