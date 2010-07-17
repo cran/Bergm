@@ -12,7 +12,7 @@ or population MCMC with snooker update.
 \usage{
 bergm(model, burn.in = 0, main.iter = 5000, aux.iter = 1000, 
 sdprop = NULL, sdprior = NULL, mprior = NULL, 
-theta = NULL, popMCMC = TRUE, nchains = NULL, 
+popMCMC = TRUE, nchains = NULL, 
 gamma = 1, sdepsilon = 0.05, save = FALSE)
 }
 \arguments{
@@ -29,16 +29,13 @@ count; number of iterations for the main chain(s)
 count; number of auxiliary iterations
 }
   \item{sdprop}{
-vector; standard deviation for the (Normal) proposal distribution (for single-site update)
+vector; standard deviation for the (independent) Normal proposals (for single-site update)
 }
   \item{sdprior}{
-vector; standard deviation for the (Normal) prior distribution
+vector; standard deviation for the (independent) Normal priors
 }
   \item{mprior}{
-vector; mean for the (Normal) prior distribution
-}
-  \item{theta}{
-vector; initial parameter value
+vector; mean for the Normal priors
 }
   \item{popMCMC}{
 logical; If TRUE, population MCMC is performed using snooker update
@@ -55,6 +52,9 @@ parameter; standard deviation for the snooker update parameter (epsilon)
   \item{save}{
 logical; if TRUE a file called "bergm.out" is saved in the working directory
 }
+  \item{...}{
+additional arguments, to be passed to lower-level functions
+}
 }
 \value{
 \item{theta}{matrix containing all the parameter values in the chain(s)}
@@ -70,22 +70,22 @@ logical; if TRUE a file called "bergm.out" is saved in the working directory
 }
 \examples{
 # load the Florentine marriage network 
-# (included with the ergm package)
+# included with the ergm package
 
 data(florentine)
 
-# Estimation of a 3-dimensional model
+# Estimation of a 2-dimensional model
 # measuring the propensity to form 2-stars
 # popMCMC with snooker update is used
-# (this  will take around 4 minutes)
+# (this  will take a few minutes)
 
 flo <- bergm(flomarriage~edges+kstar(2),
-main.iter=5000)
+main.iter=5000,sdprior=c(5,10),gamma=0.8)
 
 # MCMC diagnostics for the overall posterior
 # and second chain
 
-mcmc.output(flo,lags=200,chain=3)
+mcmc.output(flo,lags=200,chain=2)
 
 # Bayesian goodness-of-fit test
 

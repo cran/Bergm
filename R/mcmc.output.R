@@ -52,7 +52,6 @@ mcmc.output <- function(out,lags=100,chain=1,posterior=TRUE){
 			title("Overall posterior estimate",outer=TRUE)
 		}
 	}else{
-		
 		F <- out$theta
 		cat("\n",'Posterior Density Estimates:',"\n")
 		overall <- matrix(c(apply(F,2,mean),apply(F,2,sd)),out$dim,2)
@@ -67,7 +66,6 @@ mcmc.output <- function(out,lags=100,chain=1,posterior=TRUE){
 		rownames(rates) <- paste("Acceptance rate:")
 		rates <- as.table(rates)
 		print(rates)	
-		
 	}
 	
 
