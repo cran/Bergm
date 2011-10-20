@@ -1,0 +1,12 @@
+46b8fa65056d688201c351d3bdd6a1e1 *DESCRIPTION
+c5f9b50341a976b33fb34ec754aa0509 *R/bergm.R
+1064a7575dfc7e5872281b5bc1ffa5c9 *R/bergm.output.R
+6f652294dd5fa1150432483859f6637f *R/bergmS.R
+81885bc48313400e0fcd32d10f29f157 *R/bergmS.output.R
+612bc6a4641b3d2e783e031afb4029e7 *R/bgof.R
+7901eb1c83215c1540d9d84953ddf257 *man/Bergm-package.Rd
+a88fe234fb706cbfe97e5940c04e0842 *man/bergm.Rd
+40b5c96c8a558cdaeecb29b746eeab23 *man/bergm.output.Rd
+29bc461cbe96da9067ab6a39b6e80c24 *man/bergmS.Rd
+a21fb189791b3ce5e5aeae5fd1c86e0a *man/bergmS.output.Rd
+e35511d47b19fcf8d3ccf4a7fc6d150a *man/bgof.Rd
