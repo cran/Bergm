@@ -4,7 +4,7 @@
 Bayesian model selection for exponential random graph models
 }
 \description{
-Bayesian model selection for exponential random graphs models using the auto-RJ exchange algorithm.
+Bayesian model selection for exponential random graphs models using the auto-RJ exchange algorithm. The algorithm consists of two steps: the first step (offline) is used to sample from the posterior of each competing model using the \code{\link{bergm}} function and then approximated by normal distributions determined by the moments of each sample. The second step (online step) of the algorithm makes use of the normal posterior proposal estimated in the offline step as within-model proposals for the RJ-MCMC computation.
 }
 \usage{
 bergmS(formulae, 
@@ -22,34 +22,34 @@ bergmS(formulae,
 }
 \arguments{
   \item{formulae}{
-list; \code{R} formula objects (competing models) of the form  <graph> ~ <model specifications>, see \code{\link{ergm-terms}}.
+list; \code{R} formula objects (competing models) of the form  <network> ~ <model terms>, see \code{\link{ergm-terms}}.
 }
   \item{iters}{
 count; number of iterations for auto-RJ exchange algorithm (online step).
 }
   \item{m.priors}{
-list; means of the multivariate Normal priors of each competing model.
+list; vectors of means of the multivariate Normal priors for each competing model. By default set to a list of vectors (one for each competing model) of 0's.
 }
   \item{sigma.priors}{
-list; means of the multivariate Normal priors of each competing model.
+list; variance /covariance matrices of the multivariate Normal priors for each competing model. By default set to a list of diagonal matrices (one for each competing model) with every diagonal entry equal to 100.
 }
   \item{gammas}{
-vector; ``snooker move factors'' for each competing model (offline step).
+vector; ``parallel ADS move factors'' for each competing model (offline step). By default set to a vector of 0.5's.
 }
   \item{nchains}{
-vector; number of chains for each competing model (offline step).
+vector; number of MCMC chains for each competing model (offline step). By default set to a vector with entries (one for each competing model) equal to twice the dimensions of the competing models.
 }
   \item{sigma.epsilons}{
-list; containing variance/covariance matrices for the multivariate Normal proposals or ``snooker move parameters'' for each competing model (offline step).
+list; containing variance/covariance matrices for the multivariate Normal proposals or ``parallel ADS move parameters'' for each competing model (offline step). By default set to a list of diagonal matrices (one for each competing model) with every diagonal entry equal to 0.0025.
 }
   \item{aux.iters}{
-count; number of auxiliary iterations for network simulation for each competing model.
+count; number of auxiliary iterations for network simulation.
 }
   \item{main.iters}{
-vector; number of iterations for the main chain(s) for each competing model (offline step).
+vector; number of iterations for the MCMC chain(s) for each competing model (offline step). By default set to  a vector of 1000's.
 }
   \item{burn.ins}{
-vector; number of burn-in iterations for the beginning of an MCMC run for each competing model (offline step).
+vector; number of burn-in iterations at the beginning of an MCMC run for each competing model (offline step). By default set to  a vector of 100's.
 }
   \item{save}{
 logical; if TRUE a file called "bergmS.out" is saved in the working directory.
@@ -58,17 +58,11 @@ logical; if TRUE a file called "bergmS.out" is saved in the working directory.
 additional arguments, to be passed to lower-level functions.
 }
 }
-\value{
-\item{Theta}{matrix containing all the parameter values in the chain(s).}
-\item{dim}{model dimensions.}
-\item{nchains}{number of chains.}
-\item{time}{CPU time and real time (in seconds) that elapsed since the execution of the function commenced.}
-\item{acc.rates}{acceptance rate(s).}
-\item{formula}{model specifications.}
-\item{nnodes}{number of nodes of the observed network.}
-}
 \seealso{
- \code{\link{bergm}},
+ \code{\link{bergm}}.
+}
+\references{
+Caimo, A. and Friel, N., (submitted) ``Bayesian model selection for exponential random graph models.''
 }
 \examples{
 # load the Florentine marriage network 
@@ -87,18 +81,22 @@ formulae <- c(y ~ edges,
 # (this  will take about 3.5 minutes)
 
 flo <- bergmS(formulae,
-                  iters=10000,
-                  aux.iters=3000,
-                  main.iters=rep(1000,3),
-                  burn.in=rep(100,3),
-                  gammas=c(0.8,1,1))
+              iters=10000,
+              aux.iters=3000,
+              main.iters=rep(1000,3),
+              burn.in=rep(100,3),
+              gammas=c(0.8,1,1))
 
 # MCMC diagnostics
 
 flo.out <- bergmS.output(flo)
 
-# Bayesian goodness-of-fit test
+# Bayesian goodness-of-fit test (for the best model)
 
-bgof(flo.out,lags=200,n.sim=100,n.deg=10,n.dist=10,n.esp=5)
-
+bgof(flo.out,
+     lags=200,
+     n.sim=100,
+     n.deg=10,
+     n.dist=10,
+     n.esp=5)
 }

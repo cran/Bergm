@@ -1,8 +1,7 @@
 \name{bergm.output}
-\Rdversion{2.0}
 \alias{bergm.output}
 \title{
-MCMC output diagnostics
+MCMC output diagnostics for the Bayesian parameter estimation algorithm
 }
 \description{
 This function returns the posterior parameter density estimate and creates simple diagnostic plots for the MCMC produced from a fit. 

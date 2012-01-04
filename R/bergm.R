@@ -1,11 +1,11 @@
 bergm <- function (formula, 
-                   burn.in=NULL,
-                   main.iters=NULL,
+                   burn.in=100,
+                   main.iters=1000,
                    aux.iters=1000, 
                    m.prior = NULL, 
                    sigma.prior = NULL, 
                    nchains = NULL, 
-                   gamma = NULL, 
+                   gamma = 0.5, 
                    sigma.epsilon = NULL,
                    save = FALSE,
                    ...){ 	
@@ -33,16 +33,13 @@ stats <- .C("network_stats_wrapper",
            gs = double(Clist$nstats),
            PACKAGE="ergm")$gs
 snooker <- 0
-if (is.null(burn.in)) burn.in <- 100
-if (is.null(main.iters)) main.iters <- 1000
-if (is.null(gamma)) gamma <- 0.6
 if (is.null(m.prior))  m.prior <- rep(0,Clist$nstats) 
 if (is.null(sigma.prior)) sigma.prior <- diag(100, Clist$nstats) 
 if (is.null(nchains)) nchains <- 2*Clist$nstats
 if (is.null(sigma.epsilon)) sigma.epsilon <- diag(0.0025,Clist$nstats)
-if(gamma==0 || Clist$nstats==1){ 
+if (Clist$nstats==1){ 
 	nchains <- 1
-	if(gamma > 0 && Clist$nstats==1) sigma.epsilon <- diag(gamma,Clist$nstats)	
+	sigma.epsilon <- diag(gamma,Clist$nstats)	
 }
 Theta<- array(NA,c(main.iters,Clist$nstats,nchains))
 theta <- matrix(runif(Clist$nstats*nchains,min=-.1,max=.1),
@@ -54,7 +51,7 @@ tot.iters <- burn.in + main.iters
 
 for (k in 1:tot.iters) {		
 		for (h in 1:nchains) {
-			if(gamma>0 && Clist$nstats>1){
+			if(Clist$nstats>1 && nchains>1){
 				snooker <- gamma*apply(theta[,sample(seq(1,nchains)[-h],2)],1,diff)
 			}
 			

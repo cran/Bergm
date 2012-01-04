@@ -1,7 +1,7 @@
 \name{bergmS.output}
 \alias{bergmS.output}
 \title{
-MCMC output diagnostics
+MCMC output diagnostics for the Bayesian model selection algorithm
 }
 \description{
 This function returns posterior model and parameter density estimates and creates simple diagnostic plots for the MCMC produced by the function \code{bergmS}. 

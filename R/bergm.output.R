@@ -38,20 +38,6 @@ if(x$nchains > 1){ # ADS == TRUE
 	                           x$specs[seq(1,x$dim)],")",sep="")
 	all <- as.table(overall)
 	print(overall)
-    
-	K <- mcmc(data=FF)
-	par(mfrow=c(x$dim,3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
-	for(i in 1:x$dim){
-		plot(density(FF[,i]),
-		     main="",
-		     axes=FALSE, 
-		     xlab=bquote(paste(theta[.(i)]," (",.(x$specs[i]),")")),
-		     ylab="",lwd=2)
-		 axis(1); axis(2)
-		 plot(FF[,i],type="l",xlab="Iterations",ylab="")
-		 autocorr.plot(K[,i],auto.layout=FALSE,...)
-	}
-	title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
 		
 }else{ # ADS == FALSE
 	
@@ -66,23 +52,31 @@ if(x$nchains > 1){ # ADS == TRUE
 	print(overall)
 	
 	rates <- matrix(x$acc.rate,1,x$dim)	
-		
+
+}		
+
 	dev.new()
     	
-	G <- mcmc(data=FF)
-	par(mfrow=c(x$dim,3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
+	K <- mcmc(data=FF)
+	par(mfrow=c(min(4,x$dim),3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
+
 	for(i in 1:x$dim){
+		if(i%in%c(5,9,13)){
+			dev.new()
+			par(mfrow=c(min(4,x$dim-(i-1)),3),
+			            oma=c(0,0,3,0),
+			            mar=c(4,3,1.5,1))
+		}
 		plot(density(FF[,i]),
 		     main="",
 		     axes=FALSE, 
-		     xlab=bquote(paste(theta[.(i)],
-		     " (",.(x$specs[i]),")")),
+		     xlab=bquote(paste(theta[.(i)]," (",.(x$specs[i]),")")),
 		     ylab="",lwd=2)
 		axis(1); axis(2)
 		plot(FF[,i],type="l",xlab="Iterations",ylab="")
-		autocorr.plot(G[,i],auto.layout=FALSE,...)
-	}	
-	title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)	
+		autocorr.plot(K[,i],auto.layout=FALSE,...)
+		if(i%in%union(x$dim,c(4,8,12))) title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
+	
 }
 cat(paste("\n","Overall acceptance rate:",mean(rates),"\n","\n","\n"))
 }

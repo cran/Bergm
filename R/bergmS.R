@@ -43,7 +43,7 @@ for(i in 1:nmodels){
 	theta[[i]] <- runif(post[[i]]$dim,min=-0.1,max=0.1)
 	dims[i] <- post[[i]]$dim	
 	
-	print(post[[i]]$acc.rates)	
+	#print(post[[i]]$acc.rates)	
 	specs[[i]] <- post[[i]]$specs
 }
 
@@ -158,10 +158,8 @@ out=list(M=M,
          nmodels=nmodels,
          Baccept=Brate[1,]/Brate[2,],
          Waccept=Wrate[1,]/Wrate[2,],
-         time=time,
-         Mu=Mu,
-         Sigma=Sigma)
-if (save == TRUE) dput(out, "select.bergm.out")
+         time=time)
+if (save == TRUE) dput(out, "bergmS.out")
 out
 }
 

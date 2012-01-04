@@ -1,7 +1,7 @@
-bergmS.output <-
-function(x,
-                                ...){
+bergmS.output <- function(x,
+                          ...){
 	
+
 # model posterior
 par(mfrow = c(1,2),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
      
@@ -58,10 +58,17 @@ if(x$dims[m[i]] > 1){
 cat(paste("Between-model acceptance rate:",round(x$Baccept,2)))
 	
 # parameter posterior plot (for the best model)
+G <- mcmc(data=T,start = 1,thin = 1)
+
 dev.new()          
-par(mfrow = c(x$dims[m[1]], 3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
-G <- mcmc(data=T, start = 1, thin = 1)
+par(mfrow = c(min(4,x$dims[m[1]]), 3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
 for(i in 1:x$dims[m[1]]){
+	if(i%in%c(5,9,13)){
+		dev.new()
+		par(mfrow=c(min(4,x$dims[m[1]]-(i-1)),3),
+		            oma=c(0,0,3,0),
+		            mar=c(4,3,1.5,1))
+	}
 	plot(density(T[,i]), 
 	     main = "", 
 	     axes = FALSE, 
@@ -72,9 +79,8 @@ for(i in 1:x$dims[m[1]]){
 	axis(2)
 	plot(T[,i], type = "l", xlab = "Iterations",ylab = "")
 	autocorr.plot(G[, i], auto.layout = FALSE,...)
+	if(i%in%union(x$dims[m[1]],c(4,8,12))) title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
 }
-title(paste("MCMC output for Model ", m[1],
-            ": posterior parameter probabilities"),outer = TRUE)
 
 out=list(Theta=T,
          nchains=1,

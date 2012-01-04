@@ -1,52 +1,51 @@
 \name{bergm}
-\Rdversion{2.0}
 \alias{bergm}
 \title{
 Bayesian exponential random graph models
 }
 \description{
-Function to fit Bayesian exponential random graphs models using the exchange algorithm with either single-site update or population MCMC with parallel ADS move.
+Function to fit Bayesian exponential random graphs models using the exchange algorithm. Two are the sampling approaches available: block update and population MCMC with parallel Adaptive Direction Sampling (ADS).
 }
 \usage{
 bergm(formula, 
-      burn.in=NULL,
-      main.iters=NULL,
+      burn.in=100,
+      main.iters=1000,
       aux.iters=1000, 
       m.prior = NULL, 
       sigma.prior = NULL, 
       nchains = NULL, 
-      gamma = NULL, 
+      gamma = 0.5, 
       sigma.epsilon = NULL,
       save = FALSE,
       ...)	
 }
 \arguments{
   \item{formula}{
-formula; an \code{R} formula object, of the form  <graph> ~ <model specifications> where <graph> is a \code{\link{network}} object and <model specifications> are \code{\link{ergm-terms}}.
+formula; an \code{R} formula object, of the form  <network> ~ <model terms> where <network> is a \code{\link{network}} object and <model terms> are \code{\link{ergm-terms}}.
 }
 \item{burn.in}{
-count; number of burn-in iterations for the beginning of an MCMC run. If population MCMC is performed, it refers to the number of burn-in iterations for each chain of the population.
+count; number of burn-in iterations at the beginning of an MCMC run. If population MCMC is performed, it refers to the number of burn-in iterations for every chain of the population.
 }
   \item{main.iters}{
-count; number of iterations for the main chain(s).
+count; number of iterations for the MCMC chain(s) excluding burn-in. If population MCMC is performed, it refers to the number of iterations for every chain of the population.
 }
   \item{aux.iters}{
-count; number of auxiliary iterations used to simulate networks.
+count; number of auxiliary iterations used for network simulation.
 }
   \item{m.prior}{
-vector; mean of the multivariate Normal prior.
+vector; mean of the multivariate Normal prior. By default set to a vector of 0's.
 }
   \item{sigma.prior}{
-variance/covariance matrix for the multivariate Normal prior.
+variance/covariance matrix for the multivariate Normal prior. By default set to a diagonal matrix with every diagonal entry equal to 100.
 }
   \item{nchains}{
-count; number of chains for ADS procedure.
+count; number of chains of the population MCMC. By default set to twice the model dimension (number of model terms). If the model is one-dimensional, \code{nchains} is set to 1.
 }
   \item{gamma}{
-scalar; ``snooker move factor.'' In case of one-dimensional models, the ADS procedure is disabled and \code{gamma} will be used as variance of the Normal proposal distribution.
+scalar; ``parallel ADS move factor.'' In case of one-dimensional models, the population MCMC procedure is disabled and \code{gamma} is used as variance of the Normal proposal distribution.
 }
   \item{sigma.epsilon}{
-variance/covariance matrix for the multivariate Normal proposal or ``snooker move parameter''. In case of one-dimensional models, if \code{gamma} > 0, \code{sigma.espilon} is set equal to \code{gamma}.
+variance/covariance matrix for the multivariate Normal proposal or ``parallel ADS move parameter''. By default set to a diagonal matrix with every diagonal entry equal to 0.0025. If the model is one-dimensional, \code{sigma.espilon} is set equal to \code{gamma}.
 }
   \item{save}{
 logical; if TRUE a file called "bergm.out" is saved in the working directory.
@@ -55,19 +54,14 @@ logical; if TRUE a file called "bergm.out" is saved in the working directory.
 additional arguments, to be passed to lower-level functions.
 }
 }
-\value{
-\item{Theta}{matrix containing all the parameter values in the chain(s).}
-\item{dim}{model dimensions.}
-\item{nchains}{number of chains.}
-\item{time}{CPU time and real time (in seconds) that elapsed since the execution of the function commenced.}
-\item{acc.rates}{acceptance rate(s).}
-\item{formula}{model specifications.}
-\item{nnodes}{number of nodes of the observed network.}
-}
 \seealso{
  \code{\link{bergm.output}}, 
  \code{\link{bgof}}.
 }
+\references{
+Caimo, A. and Friel, N., (2011) ``Bayesian inference for exponential random graph models,'' Social Networks, 33, 41-55.
+}
+
 \examples{
 # load the Florentine marriage network 
 # included with the ergm package
@@ -76,7 +70,7 @@ data(florentine)
 
 # Estimation of a 3-dimensional model
 # measuring the propensity to form 2- and 3- stars.
-# Parallel ADS approach is used
+# Population MCMC with ADS approach is used
 # (this  will take about 1 minute)
 
 flo <- bergm(flomarriage ~ edges + kstar(2:3),
@@ -90,5 +84,9 @@ bergm.output(flo)
 
 # Bayesian goodness-of-fit test
 
-bgof(flo,n.sim=100,n.deg=10,n.dist=9,n.esp=6)
+bgof(flo,
+     n.sim=100,
+     n.deg=10,
+     n.dist=9,
+     n.esp=6)
 }
