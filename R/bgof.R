@@ -16,12 +16,17 @@ F <- as.matrix(x$Theta[sample(dim(x$Theta)[1],sample.size),])
 if(directed==FALSE){ # undirected
 
 	for(i in 1:sample.size){
+#		a <- gof(x$formula,
+#		         nsim=1,
+#		         burnin=aux.iters,
+#		         theta0=F[i,],
+#		         verbose=FALSE)
+# Using ergm 3.0-1 arguments:
 		a <- gof(x$formula,
-		         nsim=1,
-		         burnin=aux.iters,
-		         theta0=F[i,],
-		         verbose=FALSE)
-       	if(i==1) A<-as.vector(a$pobs.deg)
+		         coef=F[i,],
+		         verbose=FALSE,
+		         control=control.gof.formula(nsim=1, MCMC.burnin=aux.iters))
+		if(i==1) A<-as.vector(a$pobs.deg)
 		A<-cbind(A,as.vector(a$psim.deg))
 		if(i==1) B<-as.vector(a$pobs.dist) 
 		B<-cbind(B,as.vector(a$psim.dist))
@@ -86,12 +91,18 @@ if(directed==FALSE){ # undirected
 }else{ # directed
 	
 	for(i in 1:sample.size){
+#		a <- gof(x$formula,
+#		         nsim=1,
+#		         burnin=aux.iters,
+#		         theta0=F[i,],
+#		         verbose=FALSE,
+#		         GOF=~idegree+odegree+espartners+distance)
+# Using ergm 3.0-1 arguments:
 		a <- gof(x$formula,
-		         nsim=1,
-		         burnin=aux.iters,
-		         theta0=F[i,],
+		         coef=F[i,],
 		         verbose=FALSE,
-		         GOF=~idegree+odegree+espartners+distance)
+		         GOF=~idegree+odegree+espartners+distance,
+		         control=control.gof.formula(nsim=1, MCMC.burnin=aux.iters))
 		if(i==1) A<-as.vector(a$pobs.ideg)
 		A<-cbind(A,as.vector(a$psim.ideg))
 		if(i==1) AA<-as.vector(a$pobs.odeg)

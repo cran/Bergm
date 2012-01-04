@@ -1,5 +1,5 @@
 \name{Bergm-package}
-\Rdversion{2.1}
+\Rdversion{2.2}
 \alias{Bergm-package}
 \docType{package}
 \title{

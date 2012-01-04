@@ -22,16 +22,8 @@ MHproposal <- MHproposal.ergm(formula,
                               model = model, 
                               weights = "default", #TNT sampler
                               class = "c")  
-stats <- .C("network_stats_wrapper",
-           as.integer(Clist$tails), as.integer(Clist$heads), 
-           as.integer(Clist$nedges),
-           as.integer(Clist$n),
-           as.integer(Clist$dir), as.integer(Clist$bipartite), 
-           as.integer(Clist$nterms), 
-           as.character(Clist$fnamestring), as.character(Clist$snamestring), 
-           as.double(Clist$inputs),
-           gs = double(Clist$nstats),
-           PACKAGE="ergm")$gs
+
+stats <- summary(formula)
 snooker <- 0
 if (is.null(m.prior))  m.prior <- rep(0,Clist$nstats) 
 if (is.null(sigma.prior)) sigma.prior <- diag(100, Clist$nstats) 
@@ -59,25 +51,11 @@ for (k in 1:tot.iters) {
 			pr <- dmvnorm(rbind(theta1,theta[,h]),mean=m.prior,sigma=sigma.prior)
 			prr <- pr[1]/pr[2]
 
-			delta <- .C("MCMC_wrapper", as.integer(length(c(Clist$nedges, 0, 0))), 
-			as.integer(c(Clist$nedges, 0, 0)), 
-			as.integer(Clist$tails), as.integer(Clist$heads), 
-			as.integer(Clist$maxpossibleedges), 
-			as.integer(Clist$n), as.integer(Clist$dir), as.integer(Clist$bipartite), 
-			as.integer(Clist$nterms), as.character(Clist$fnamestring), 
-			as.character(Clist$snamestring), as.character(MHproposal$name), 
-			as.character(MHproposal$package), as.double(Clist$inputs), 
-			as.double(theta1), #
-			as.integer(1), statsmatrix = double(1 * Clist$nstats), 
-			as.integer(aux.iters), as.integer(0), 
-			newnwtails = integer(Clist$maxedges), newnwheads = integer(Clist$maxedges), 
-			as.integer(FALSE), as.integer(MHproposal$bd$attribs), 
-			as.integer(MHproposal$bd$maxout), as.integer(MHproposal$bd$maxin), 
-			as.integer(MHproposal$bd$minout), as.integer(MHproposal$bd$minin), 
-			as.integer(MHproposal$bd$condAllDegExact), 
-			as.integer(length(MHproposal$bd$attribs)), 
-			as.integer(Clist$maxedges), PACKAGE="ergm")$statsmatrix 	
+			statd <- as.vector(simulate(formula, coef=theta1, statsonly=TRUE,
+                                        control=control.simulate.formula(MCMC.burnin=aux.iters,
+                                                                         MCMC.interval=0)))
 
+			delta <- statd - stats
 			beta <- t(theta[,h] - theta1) %*% delta + log(prr)
                 
 			if (beta >= log(runif(1))) {
