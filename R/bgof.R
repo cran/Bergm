@@ -14,14 +14,7 @@ if(x$nchains > 1) x$Theta <- apply(x$Theta,2,cbind)
 F <- as.matrix(x$Theta[sample(dim(x$Theta)[1],sample.size),])
 
 if(directed==FALSE){ # undirected
-
 	for(i in 1:sample.size){
-#		a <- gof(x$formula,
-#		         nsim=1,
-#		         burnin=aux.iters,
-#		         theta0=F[i,],
-#		         verbose=FALSE)
-# Using ergm 3.0-1 arguments:
 		a <- gof(x$formula,
 		         coef=F[i,],
 		         verbose=FALSE,
@@ -91,13 +84,6 @@ if(directed==FALSE){ # undirected
 }else{ # directed
 	
 	for(i in 1:sample.size){
-#		a <- gof(x$formula,
-#		         nsim=1,
-#		         burnin=aux.iters,
-#		         theta0=F[i,],
-#		         verbose=FALSE,
-#		         GOF=~idegree+odegree+espartners+distance)
-# Using ergm 3.0-1 arguments:
 		a <- gof(x$formula,
 		         coef=F[i,],
 		         verbose=FALSE,

@@ -10,20 +10,19 @@ bergm <- function (formula,
                    save = FALSE,
                    ...){ 	
 ptm=proc.time()   
-
 y <- ergm.getnetwork(formula)
 model <- ergm.getmodel(formula,y)  
 Clist <- ergm.Cprepare(y, model)
-Clist$maxedges = 1 + max(20000,Clist$nedges)
 MHproposal <- MHproposal.ergm(formula,
                               constraints=~., 
-                              arguments = NULL,
-                              nw = y, 
-                              model = model, 
-                              weights = "default", #TNT sampler
-                              class = "c")  
-
-stats <- summary(formula)
+                              arguments=NULL,
+                              nw=y, 
+                              model=model, 
+                              weights="default", # TNT sampler
+                              class="c")  
+stats0 <- summary(formula)
+control <- control.simulate.formula(MCMC.burnin=aux.iters,MCMC.interval=0)
+control$MCMC.samplesize <- 1
 snooker <- 0
 if (is.null(m.prior))  m.prior <- rep(0,Clist$nstats) 
 if (is.null(sigma.prior)) sigma.prior <- diag(100, Clist$nstats) 
@@ -33,31 +32,22 @@ if (Clist$nstats==1){
 	nchains <- 1
 	sigma.epsilon <- diag(gamma,Clist$nstats)	
 }
-Theta<- array(NA,c(main.iters,Clist$nstats,nchains))
+Theta <- array(NA,c(main.iters,Clist$nstats,nchains))
 theta <- matrix(runif(Clist$nstats*nchains,min=-.1,max=.1),
                 Clist$nstats,nchains)
 acc.counts <- rep(0, nchains)
-pr <- theta1 <- rep(0,Clist$nstats)
-
+theta1 <- rep(0,Clist$nstats)
 tot.iters <- burn.in + main.iters
-
 for (k in 1:tot.iters) {		
 		for (h in 1:nchains) {
 			if(Clist$nstats>1 && nchains>1){
 				snooker <- gamma*apply(theta[,sample(seq(1,nchains)[-h],2)],1,diff)
 			}
-			
 			theta1 <- theta[,h] + snooker + rmvnorm(1,sigma=sigma.epsilon)[1,]
 			pr <- dmvnorm(rbind(theta1,theta[,h]),mean=m.prior,sigma=sigma.prior)
-			prr <- pr[1]/pr[2]
-
-			statd <- as.vector(simulate(formula, coef=theta1, statsonly=TRUE,
-                                        control=control.simulate.formula(MCMC.burnin=aux.iters,
-                                                                         MCMC.interval=0)))
-
-			delta <- statd - stats
-			beta <- t(theta[,h] - theta1) %*% delta + log(prr)
-                
+			# eta0 <- ergm.eta(theta1,model$etamap)           
+            delta <- ergm.mcmcslave(Clist,MHproposal,eta0=theta1,control,verbose=FALSE)$s 
+			beta <- t(theta[,h] - theta1) %*% delta + log(pr[1]/pr[2])
 			if (beta >= log(runif(1))) {
 				theta[,h] <- theta1
 				if (k > burn.in) acc.counts[h] <- acc.counts[h] + 1
@@ -68,18 +58,17 @@ for (k in 1:tot.iters) {
 if(nchains==1){
 	Theta <- as.matrix(Theta[,,1])
 }
-
-time = proc.time() - ptm
-    
+time = proc.time() - ptm   
 out=list(Clist=Clist,
          MHproposal=MHproposal,
+         control=control,
          formula=formula,
          model=model,
-         nnodes=Clist$n,#
+         nnodes=Clist$n,
          specs=model$coef.names,
-         dim=Clist$nstats,#
+         dim=Clist$nstats,
          nchains=nchains,
-         stats=stats,
+         stats=stats0,
          Theta=Theta,
          nchains=nchains,
          acc.rates=acc.counts/main.iters,

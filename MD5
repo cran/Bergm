@@ -1,11 +1,11 @@
-a66c1ec369432bd9f3e3050616800543 *DESCRIPTION
+3d47109e10ebb3e10463fabe6e4caa3c *DESCRIPTION
 69fb0c9b3c6eebb75822232f04764271 *NAMESPACE
-1840040a2027d81aed7779011e24a668 *R/bergm.R
+40b30b2700ef92ba4079eb7a1f7a0619 *R/bergm.R
 43d4d9da9dfd1b92aabfa94726f433a3 *R/bergm.output.R
-e24efb60c4141991f473ade25289ccd8 *R/bergmS.R
+be25a9c1eff1792cf5701831c62d3f4e *R/bergmS.R
 c12632736d9f341fb7786679778a2493 *R/bergmS.output.R
-d0536db906de737f80215bf15154a753 *R/bgof.R
-b30039afcf53167a6e01fd5da6f22649 *man/Bergm-package.Rd
+fcf8a96314e14d9227540513491b405b *R/bgof.R
+0e124ec57e0bca39f7d2ab0ea2c86d75 *man/Bergm-package.Rd
 0994ff21a2d6b7b056d6f466d0e45447 *man/bergm.Rd
 a3029a84f0fff203bdd9569418a3b989 *man/bergm.output.Rd
 7efbc0eeab1fd67c16a69c3f9743e7be *man/bergmS.Rd
