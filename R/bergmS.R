@@ -65,13 +65,15 @@ for(i in 1:iters){
                         control=post[[m1]]$control,
                         verbose=FALSE)
     y1 <- newnw.extract(y,z)                     # extract new network object
-    Clist <- ergm.Cprepare(y1, post[[m]]$model)
-    smy1 <- .C("network_stats_wrapper", as.integer(Clist$tails), # s_{m}(y')
-                 as.integer(Clist$heads), as.integer(Clist$time), as.integer(Clist$lasttoggle), 
-                 as.integer(Clist$nedges), as.integer(Clist$n), as.integer(Clist$dir), 
-                 as.integer(Clist$bipartite), as.integer(Clist$nterms), 
-                 as.character(Clist$fnamestring), as.character(Clist$snamestring), 
-                 as.double(Clist$inputs), gs = as.double(rep(0, Clist$nstats)), PACKAGE = "ergm")$gs
+    
+    smy1 <- ergm.getglobalstats(y1,post[[m]]$model)
+    #Clist <- ergm.Cprepare(y1, post[[m]]$model)
+    #smy1 <- .C("network_stats_wrapper", as.integer(Clist$tails), # s_{m}(y')
+    #             as.integer(Clist$heads), as.integer(Clist$time), as.integer(Clist$lasttoggle), 
+    #             as.integer(Clist$nedges), as.integer(Clist$n), as.integer(Clist$dir), 
+    #             as.integer(Clist$bipartite), as.integer(Clist$nterms), 
+    #             as.character(Clist$fnamestring), as.character(Clist$snamestring), 
+    #             as.double(Clist$inputs), gs = as.double(rep(0, Clist$nstats)), PACKAGE = "ergm")$gs
     delta <- smy1 - post[[m]]$stats # delta = s_{m}(y') - s_{m}(y); -z$s = s_{m'}(y) - s_{m'}(y')
 	beta <- t(theta[[m]]) %*% delta + t(theta1) %*% -z$s + log(pr1/pr*ww/ww1)
 

@@ -71,11 +71,11 @@ data(florentine)
 # Estimation of a 3-dimensional model
 # measuring the propensity to form 2- and 3- stars.
 # Population MCMC with ADS approach is used
-# (this  will take about 1 minute)
+# (this should take about 30 seconds)
 
 flo <- bergm(flomarriage ~ edges + kstar(2:3),
              burn.in=500,
-             aux.iters=3000,
+             aux.iters=1000,
              main.iters=1500)
 
 # MCMC diagnostics

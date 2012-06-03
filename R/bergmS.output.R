@@ -79,7 +79,7 @@ for(i in 1:x$dims[m[1]]){
 	axis(2)
 	plot(T[,i], type = "l", xlab = "Iterations",ylab = "")
 	autocorr.plot(G[, i], auto.layout = FALSE,...)
-	if(i%in%union(x$dims[m[1]],c(4,8,12))) title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
+	if(i%in%union(x$dims[m[1]],c(4,8,12))) title(paste("MCMC output for Model:",x$formula[m[1]]),outer=TRUE)
 }
 
 out=list(Theta=T,

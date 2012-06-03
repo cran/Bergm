@@ -78,11 +78,11 @@ formulae <- c(y ~ edges,
               y ~ edges + gwdegree(log(2),fixed=TRUE))
 
 # Model selection via auto-RJ exchange algorithm
-# (this  will take about 3.5 minutes)
+# (this should take about 1.5 minutes)
 
 flo <- bergmS(formulae,
               iters=10000,
-              aux.iters=3000,
+              aux.iters=1000,
               main.iters=rep(1000,3),
               burn.in=rep(100,3),
               gammas=c(0.8,1,1))
