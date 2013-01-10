@@ -58,25 +58,21 @@ additional arguments, to be passed to lower-level functions.
  \code{\link{bergm.output}}, 
  \code{\link{bgof}}.
 }
-\references{
-Caimo, A. and Friel, N., (2011) ``Bayesian inference for exponential random graph models,'' Social Networks, 33, 41-55.
-}
 
 \examples{
 # load the Florentine marriage network 
-# included with the ergm package
 
 data(florentine)
 
-# Estimation of a 3-dimensional model
-# measuring the propensity to form 2- and 3- stars.
+# Estimation of a 2-dimensional model
+# measuring the propensity to form 2-stars.
 # Population MCMC with ADS approach is used
-# (this should take about 30 seconds)
 
-flo <- bergm(flomarriage ~ edges + kstar(2:3),
-             burn.in=500,
-             aux.iters=1000,
-             main.iters=1500)
+flo <- bergm(flomarriage ~ edges + kstar(2),
+             burn.in=50,
+             aux.iters=500,
+             main.iters=500,
+             gamma=1)
 
 # MCMC diagnostics
 
@@ -85,7 +81,8 @@ bergm.output(flo)
 # Bayesian goodness-of-fit test
 
 bgof(flo,
-     n.sim=100,
+     aux.iters=500,
+     sample.size=50,
      n.deg=10,
      n.dist=9,
      n.esp=6)

@@ -61,42 +61,28 @@ additional arguments, to be passed to lower-level functions.
 \seealso{
  \code{\link{bergm}}.
 }
-\references{
-Caimo, A. and Friel, N., (submitted) ``Bayesian model selection for exponential random graph models.''
-}
+
 \examples{
 # load the Florentine marriage network 
-# included with the ergm package
 
 data(florentine)
 y <- flomarriage
 
 # Competing models:
 
-formulae <- c(y ~ edges, 
-              y ~ edges + gwesp(log(2),fixed=TRUE),
+formulae <- c(y ~ edges + kstar(2),
               y ~ edges + gwdegree(log(2),fixed=TRUE))
 
 # Model selection via auto-RJ exchange algorithm
-# (this should take about 1.5 minutes)
 
 flo <- bergmS(formulae,
-              iters=10000,
-              aux.iters=1000,
-              main.iters=rep(1000,3),
-              burn.in=rep(100,3),
-              gammas=c(0.8,1,1))
+              iters=1500,
+              aux.iters=500,
+              main.iters=rep(100,2),
+              burn.in=rep(50,2),
+              gammas=c(1,1.2))
 
 # MCMC diagnostics
 
 flo.out <- bergmS.output(flo)
-
-# Bayesian goodness-of-fit test (for the best model)
-
-bgof(flo.out,
-     lags=200,
-     n.sim=100,
-     n.deg=10,
-     n.dist=10,
-     n.esp=5)
 }
