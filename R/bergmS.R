@@ -37,7 +37,7 @@ bergmS <- function(formulae,
         }
         else {
             Sigma[[i]] <- var(post[[i]]$Theta)
-            diag(Sigma[[i]]) = 8/7 * Sigma[[i]]
+            diag(Sigma[[i]]) = Sigma[[i]]
         }
         Mu[[i]] <- apply(post[[i]]$Theta, 2, mean)
         theta[[i]] <- runif(post[[i]]$dim, min = -0.1, max = 0.1)

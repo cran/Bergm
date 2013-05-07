@@ -50,11 +50,7 @@ for(i in 1:length(mcounts)){
 		cat(paste("BF_",m[1],m[i]," = ",mcounts[1]/mcounts[i],sep="","\n","\n"))
 	}
 }
-if(x$dims[m[i]] > 1){ 
-	T <- as.matrix(x$Theta[x$M==m[1],][,1:x$dims[m[1]]]) 
-}else{
-	T <- as.matrix(x$Theta[x$M==m[1],])
-}	
+T <- as.matrix(x$Theta[x$M==m[1],][,1:x$dims[m[1]]]) 
 cat(paste("Between-model acceptance rate:",round(x$Baccept,2)))
 	
 # parameter posterior plot (for the best model)

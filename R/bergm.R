@@ -37,11 +37,11 @@ bergm <- function (formula,
         sigma.epsilon <- diag(gamma, Clist$nstats)
     }
     Theta <- array(NA, c(main.iters, Clist$nstats, nchains))
-    theta <- matrix(runif(Clist$nstats * nchains, min = -0.1, 
-        max = 0.1), Clist$nstats, nchains)
+    theta <- matrix(runif(Clist$nstats * nchains, min = -0.1, max = 0.1), Clist$nstats, nchains)
     acc.counts <- rep(0, nchains)
     theta1 <- rep(0, Clist$nstats)
     tot.iters <- burn.in + main.iters
+
     for (k in 1:tot.iters) {
         for (h in 1:nchains) {
             if (Clist$nstats > 1 && nchains > 1) {
@@ -77,4 +77,5 @@ bergm <- function (formula,
     if (save == TRUE) 
         dput(out, "bergm.out")
     out
+
 }
