@@ -1,22 +1,24 @@
-\name{bergm}
-\alias{bergm}
+\name{abergm}
+\alias{abergm}
 \title{
-Bayesian exponential random graph models
+Adaptive algorithms for Bayesian exponential random graph models
 }
 \description{
-Function to fit Bayesian exponential random graphs models using the exchange algorithm. Two are the sampling approaches available: block update and population MCMC with parallel Adaptive Direction Sampling (ADS).
-}
+Function to fit Bayesian exponential random graphs models using adaptive exchange algorithms.}
 \usage{
-bergm(formula, 
-      burn.in=100,
-      main.iters=1000,
-      aux.iters=1000, 
+abergm(formula, 
+      burn.in = 100, 
+      main.iters = 1000, 
+      aux.iters = 1000, 
       m.prior = NULL, 
       sigma.prior = NULL, 
       nchains = NULL, 
       gamma = 0.5, 
-      sigma.epsilon = NULL,
-      ...)	
+      method = 'Adaptive.chains', 
+      DR=FALSE, 
+      rectangular = TRUE,
+      sigma.epsilon = NULL, 
+      ...)
 }
 \arguments{
   \item{formula}{
@@ -43,6 +45,15 @@ count; number of chains of the population MCMC. By default set to twice the mode
   \item{gamma}{
 scalar; ``parallel ADS move factor.'' In case of one-dimensional models, the population MCMC procedure is disabled and \code{gamma} is used as variance of the Normal proposal distribution.
 }
+  \item{method}{
+name of the adaptive strategy: \code{ADS} = adaptive direction sampling, \code{Adaptive.past} = adaptive strategy where past parameter particles are used, \code{Adaptive.chains} (default) = adaptive strategy all particles at the current time for all chains are used.
+}
+  \item{DR}{
+logical; if \code{TRUE} delayed rejection is used. 
+}
+  \item{rectangular}{
+logical; if \code{Adaptive.past} is used, it defines the type of adaptive strategy: if \code{TRUE} (default) = all parameter particles from all chains and all past simulations are used, if \code{FALSE} = all parameter particles along the same chain and all are used.
+}
   \item{sigma.epsilon}{
 variance/covariance matrix for the multivariate Normal proposal or ``parallel ADS move parameter''. By default set to a diagonal matrix with every diagonal entry equal to 0.0025. If the model is one-dimensional, \code{sigma.espilon} is set equal to \code{gamma}.
 }
@@ -51,35 +62,19 @@ additional arguments, to be passed to lower-level functions.
 }
 }
 \seealso{
- \code{\link{bergm.output}}, 
- \code{\link{bgof}}.
+ \code{\link{bergm}}
 }
 
 \examples{
-# load the Florentine marriage network 
+data(molecule)
 
-data(florentine)
-
-# Estimation of a 2-dimensional model
-# measuring the propensity to form 2-stars.
-# Population MCMC with ADS approach is used
-
-flo <- bergm(flomarriage ~ edges + kstar(2),
-             burn.in=50,
-             aux.iters=500,
-             main.iters=500,
-             gamma=1)
-
-# MCMC diagnostics
-
-bergm.output(flo)
-
-# Bayesian goodness-of-fit test
-
-bgof(flo,
-     aux.iters=500,
-     sample.size=50,
-     n.deg=10,
-     n.dist=9,
-     n.esp=6)
-}
+mol <- abergm(molecule ~ edges + kstar(2),
+              burn.in=100,
+              aux.iters=50,
+              main.iters=500,
+              method='Adaptive.chains',
+              nchains=5,
+              DR=TRUE,
+              gamma=.7)
+}             
+              

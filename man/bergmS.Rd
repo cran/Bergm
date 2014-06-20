@@ -17,7 +17,6 @@ bergmS(formulae,
        aux.iters = 1000, 
        main.iters = NULL,
        burn.ins=NULL,
-       save=FALSE, 
        ...)
 }
 \arguments{
@@ -50,9 +49,6 @@ vector; number of iterations for the MCMC chain(s) for each competing model (off
 }
   \item{burn.ins}{
 vector; number of burn-in iterations at the beginning of an MCMC run for each competing model (offline step). By default set to  a vector of 100's.
-}
-  \item{save}{
-logical; if TRUE a file called "bergmS.out" is saved in the working directory.
 }
   \item{\dots}{
 additional arguments, to be passed to lower-level functions.

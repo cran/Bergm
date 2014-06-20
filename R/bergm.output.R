@@ -43,6 +43,8 @@ if(x$nchains > 1){ # ADS == TRUE
 	
 	FF <- x$Theta
 	
+	cat("\n",paste("MCMC results for Model: y ~", x$formula[3]),"\n")
+	
 	cat("\n",'Posterior density estimate:',"\n")
 	overall <- rbind(apply(FF,2,mean),apply(FF,2,sd))
 	rownames(overall) <- c("Post. mean:","Post. sd:")

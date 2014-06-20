@@ -19,19 +19,21 @@ axis(2)
 plot(x$M, 
      type = "l", 
      xlab = "Iterations",
-     ylab="",
+     ylab = "",
      axes = FALSE)
 axis(1)     
 axis(2,seq(1,x$nmodels),model.label)
 title("MCMC output : posterior model probabilities", outer = TRUE)     
     
-# parameter posterior (for each model)
+    
+# parameter posterior (for the best model)
 mcounts <- abs(sort(-table(x$M)))
 m <- rep(0,length(mcounts))
 for(i in 1:length(mcounts)){
 	m[i] <- as.numeric(names(sort(-table(x$M)))[i])
-	Theta <- as.matrix(x$Theta[x$M==m[i],1:x$dims[m[i]]]) 
+	Theta <- matrix(c(x$post[[m[i]]]$Theta,x$Theta[x$M==m[i],1:x$dims[m[i]]]),byrow = TRUE,ncol=x$dims[m[i]]) 
 	if(i==1){ 
+		T <- Theta
 		cat("\n", "BEST MODEL","\n", "----------")
 	}
 	cat("\n", "Model ",m[i],": ",paste(c(x$formula[[m[i]]])),"\n",sep="")
@@ -50,7 +52,6 @@ for(i in 1:length(mcounts)){
 		cat(paste("BF_",m[1],m[i]," = ",mcounts[1]/mcounts[i],sep="","\n","\n"))
 	}
 }
-T <- as.matrix(x$Theta[x$M==m[1],][,1:x$dims[m[1]]]) 
 cat(paste("Between-model acceptance rate:",round(x$Baccept,2)))
 	
 # parameter posterior plot (for the best model)

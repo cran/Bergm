@@ -5,5 +5,6 @@ exportPattern(".")
 import(
   ergm,
   coda,
-  mvtnorm
+  mvtnorm,
+  network
 )
