@@ -1,0 +1,18 @@
+citHeader("To cite package Bergm in publications use:")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry        = "Article",
+         title        = "Bergm: Bayesian Exponential Random Graphs in R",
+         author       = personList(as.person("Alberto Caimo and Nial Friel")),
+         year         = "2014",
+         journal      = "Journal of Statistical Software",
+         volume       = "to appear", 
+         URL          = "http://arxiv.org/abs/1201.2770", 
+
+         textVersion = 
+         paste("Alberto Caimo and Nial Friel (2014).",
+               "Bergm: Bayesian Exponential Random Graphs in R, to appear in Journal of Statistical Software. Available in e-print format at http://arxiv.org/abs/1201.2770"),
+	 header = "To cite the Bergm package, please use:"
+)

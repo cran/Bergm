@@ -58,6 +58,8 @@ if(x$nchains > 1){ # ADS == TRUE
 }		
 
 	dev.new()
+	
+	seqq <- 4 # maximum number of parameter diagnostics plots to display in each graphics window
     	
 	K <- mcmc(data=FF)
 	par(mfrow=c(min(4,x$dim),3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
@@ -77,7 +79,11 @@ if(x$nchains > 1){ # ADS == TRUE
 		axis(1); axis(2)
 		plot(FF[,i],type="l",xlab="Iterations",ylab="")
 		autocorr.plot(K[,i],auto.layout=FALSE,...)
-		if(i%in%union(x$dim,c(4,8,12))) title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
+		
+		if(x$dim > 4) 
+			seqq <- seq(4, x$dim, 4)
+		if(i%in%union(x$dim,seqq)) 
+			title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
 	
 }
 cat(paste("\n","Overall acceptance rate:",mean(rates),"\n","\n","\n"))

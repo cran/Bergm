@@ -34,7 +34,7 @@ bergm <- function (formula,
     }
     Theta <- array(NA, c(main.iters, Clist$nstats, nchains))
     theta <- matrix(runif(Clist$nstats * nchains, min = -0.1, max = 0.1), Clist$nstats, nchains)
-    acc.counts <- rep(NA, nchains)
+    acc.counts <- rep(0L, nchains)
     theta1 <- rep(NA, Clist$nstats)
     tot.iters <- burn.in + main.iters
 

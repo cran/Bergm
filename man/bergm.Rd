@@ -56,13 +56,9 @@ additional arguments, to be passed to lower-level functions.
 }
 
 \examples{
-# load the Florentine marriage network 
-
 data(florentine)
 
-# Estimation of a 2-dimensional model
-# measuring the propensity to form 2-stars.
-# Population MCMC with ADS approach is used
+# Parameter estimation via approximate exchange algorithm with ADS:
 
 flo <- bergm(flomarriage ~ edges + kstar(2),
              burn.in=50,
@@ -70,11 +66,11 @@ flo <- bergm(flomarriage ~ edges + kstar(2),
              main.iters=500,
              gamma=1)
 
-# MCMC diagnostics
+# MCMC diagnostics:
 
 bergm.output(flo)
 
-# Bayesian goodness-of-fit test
+# Bayesian goodness-of-fit test:
 
 bgof(flo,
      aux.iters=500,

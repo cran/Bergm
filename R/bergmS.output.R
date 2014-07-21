@@ -57,7 +57,10 @@ cat(paste("Between-model acceptance rate:",round(x$Baccept,2)))
 # parameter posterior plot (for the best model)
 G <- mcmc(data=T,start = 1,thin = 1)
 
-dev.new()          
+dev.new()      
+
+seqq <- 4 # maximum number of parameter diagnostics plots to display in each graphics window
+    
 par(mfrow = c(min(4,x$dims[m[1]]), 3),oma=c(0,0,3,0),mar=c(4,3,1.5,1))
 for(i in 1:x$dims[m[1]]){
 	if(i%in%c(5,9,13)){
@@ -76,7 +79,11 @@ for(i in 1:x$dims[m[1]]){
 	axis(2)
 	plot(T[,i], type = "l", xlab = "Iterations",ylab = "")
 	autocorr.plot(G[, i], auto.layout = FALSE,...)
-	if(i%in%union(x$dims[m[1]],c(4,8,12))) title(paste("MCMC output for Model:",x$formula[m[1]]),outer=TRUE)
+	
+	if(x$dim[m[1]] > 4) 
+		seqq <- seq(4, x$dim[m[1]], 4)
+	if(i%in%union(x$dims[m[1]],seqq)) 
+		title(paste("MCMC output for Model:",x$formula[m[1]]),outer=TRUE)
 }
 
 out=list(Theta=T,

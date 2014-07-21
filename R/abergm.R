@@ -78,15 +78,10 @@ abergm <- function (formula,
             				COV <- UpdateCov(tv,COV,Clist$nstats,nrow(tv))
             			}
             			SIGMA <- COV*((2.38)^2/Clist$nstats)
-            			
-            			#if(all(eigen(SIGMA)$values > 0.000000000001) & sample(c(TRUE,FALSE),1,prob=c(.99,.01))){
-            				#if(sample(c(TRUE,FALSE),1,prob=c(.99,.01))){
-            					FT <- sample(c(TRUE,FALSE),1,prob=c(.99,.01))
-            					sigma.epsilon <- FT*SIGMA + (1-FT)*diag(0.0025, Clist$nstats)
-            				#}else{
-            					#sigma.epsilon <- diag(0.0025, Clist$nstats)
-            				#} 
-            			#}	           			
+
+            			FT <- sample(c(TRUE,FALSE),1,prob=c(.99,.01))
+            			sigma.epsilon <- FT*SIGMA + (1-FT)*diag(0.0025, Clist$nstats)
+         			
             		}else{
             			if(method=='Adaptive.chains')   		
             				sigma.epsilon <- (1/Clist$nstats)*cov(t(theta))*((2.38)^2)
@@ -95,9 +90,8 @@ abergm <- function (formula,
             	if(k > burn.in | method %in% c('Adaptive.past','Adaptive.chains')){
             		snooker <- 0
             	}
-            	if(method=='ADS'){
+            	if(method=='ADS')
                 		snooker <- gamma * apply(theta[, sample(seq(1, nchains)[-h], 2)], 1, diff) 
-             	}
             }
             err <- rmvnorm(1, sigma = sigma.epsilon)[1,] 
             theta1 <- theta[,h] + snooker + err
@@ -123,12 +117,12 @@ abergm <- function (formula,
             		         diff(dmvnorm(t2t0, mean = theta1-snooker, sigma = sigma.epsilon,log=TRUE)) + 
             		         log((1-exp(beta1.num))/(1-exp(beta1)))
           		 
-            		if(beta2 >= log(runif(1))){
+            			if(beta2 >= log(runif(1))){
                         theta[,h] <- theta2
                     		if(k > burn.in) 
                     			acc.counts2[h] <- acc.counts2[h] + 1
-                 	}
-            	}
+                	}
+            		}
           	}
         }
         if (k > burn.in) 

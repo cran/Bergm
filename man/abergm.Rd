@@ -69,12 +69,12 @@ additional arguments, to be passed to lower-level functions.
 data(molecule)
 
 mol <- abergm(molecule ~ edges + kstar(2),
-              burn.in=50,
-              aux.iters=50,
-              main.iters=500,
-              method='Adaptive.chains',
-              nchains=4,
-              gamma=1)
+              burn.in = 50,
+              aux.iters = 50,
+              main.iters = 500,
+              method = 'Adaptive.chains',
+              nchains = 4,
+              gamma = 1)
 
 }             
               

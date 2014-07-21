@@ -59,24 +59,23 @@ additional arguments, to be passed to lower-level functions.
 }
 
 \examples{
-# load the Florentine marriage network 
-
 data(florentine)
+
 y <- flomarriage
 
 # Competing models:
 
-formulae <- c(y ~ edges + kstar(2),
-              y ~ edges + gwdegree(log(2),fixed=TRUE))
+formulae <- c(y ~ edges,
+              y ~ edges + kstar(2))
 
-# Model selection via auto-RJ exchange algorithm
+# Model selection via auto-RJ approximate exchange algorithm
 
 flo <- bergmS(formulae,
               iters=1500,
               aux.iters=500,
               main.iters=rep(100,2),
               burn.in=rep(50,2),
-              gammas=c(1,1.2))
+              gammas=c(1,1))
 
 # MCMC diagnostics
 
