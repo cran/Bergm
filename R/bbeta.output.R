@@ -9,7 +9,7 @@ bbeta.output <- function (x, plot = FALSE, ...){
     all <- as.table(overall)
     print(overall)
     
-    cat(paste("\n","Acceptance rate:", x$acc.rate,"\n"))
+    cat("\n","Acceptance rate:", x$acc.rate,"\n")
     
     if(plot==TRUE){
          dev.new()

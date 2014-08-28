@@ -15,7 +15,7 @@ F <- as.matrix(x$Theta[sample(dim(x$Theta)[1],sample.size),])
 
 if(directed==FALSE){ # undirected
 	for(i in 1:sample.size){
-		a <- gof(x$formula,
+		a <- gof.formula(x$formula,
 		         coef=F[i,],
 		         verbose=FALSE,
 		         control=control.gof.formula(nsim=1, MCMC.burnin=aux.iters))
@@ -84,7 +84,7 @@ if(directed==FALSE){ # undirected
 }else{ # directed
 	
 	for(i in 1:sample.size){
-		a <- gof(x$formula,
+		a <- gof.formula(x$formula,
 		         coef=F[i,],
 		         verbose=FALSE,
 		         GOF=~idegree+odegree+espartners+distance,

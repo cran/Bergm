@@ -51,14 +51,10 @@ bergmS <- function(formulae,
         dims[i] <- post[[i]]$dim
         specs[[i]] <- post[[i]]$specs
         
-        bergm.output(post[[i]])
+        #bergm.output(post[[i]])
     }
     
-    ANSWER <- readline("Do you want to proceed with the model selection procedure? ")
-    if (any(substr(ANSWER, 1, 1) ==c("n","N"))){
-    	out = list(model = post)
-    	stop("bergmS stopped.",call. = FALSE)
-    }else{ cat("Online step starting now. \n")
+    #
     
         Theta <- matrix(0L, iters, max(dims))
         M <- rep.int(0, iters)
@@ -114,5 +110,5 @@ bergmS <- function(formulae,
             Baccept = Brate[1, ]/Brate[2, ], Waccept = Wrate[1, ]/Wrate[2, 
                 ], time = time)
         out
-    }
+
 }

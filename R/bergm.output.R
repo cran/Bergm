@@ -3,7 +3,7 @@ bergm.output <- function(x,
  
 if(x$nchains > 1){ # ADS == TRUE
 	
-	cat("\n",paste("MCMC results for Model: y ~", x$formula[3]),"\n")
+	cat("\n", "MCMC results for Model: y ~", paste(x$formula[3]),"\n")
 	
 	cat("\n","Posterior mean:","\n")
 	postmean <- apply(x$Theta,c(3,2),mean)
@@ -43,7 +43,7 @@ if(x$nchains > 1){ # ADS == TRUE
 	
 	FF <- x$Theta
 	
-	cat("\n",paste("MCMC results for Model: y ~", x$formula[3]),"\n")
+	cat("\n", "MCMC results for Model: y ~", paste(x$formula[3]),"\n")
 	
 	cat("\n",'Posterior density estimate:',"\n")
 	overall <- rbind(apply(FF,2,mean),apply(FF,2,sd))
@@ -86,6 +86,6 @@ if(x$nchains > 1){ # ADS == TRUE
 			title(paste("MCMC output for Model: y ~",x$formula[3]),outer=TRUE)
 	
 }
-cat(paste("\n","Overall acceptance rate:",mean(rates),"\n","\n","\n"))
+cat("\n","Overall acceptance rate:", format(mean(rates), digits = 2),"\n","\n","\n")
 }
 
