@@ -8,7 +8,7 @@ Function to fit Bayesian exponential random graphs models using the exchange alg
 }
 \usage{
 bergm(formula, 
-      burn.in=100,
+      burn.in=10,
       main.iters=1000,
       aux.iters=1000, 
       m.prior = NULL, 
@@ -61,7 +61,7 @@ data(florentine)
 # Parameter estimation via approximate exchange algorithm with ADS:
 
 flo <- bergm(flomarriage ~ edges + kstar(2),
-             burn.in=50,
+             burn.in=10,
              aux.iters=500,
              main.iters=500,
              gamma=1)

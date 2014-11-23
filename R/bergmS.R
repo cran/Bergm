@@ -88,7 +88,7 @@ bergmS <- function(formulae,
            
             delta <- smy1 - post[[m]]$stats
             beta <- (theta[[m]] %*% delta) + 
-                    (theta1 %*% -z$s) + 
+                    (theta1 %*% as.numeric(-z$s)) + 
                     pr1 - pr + ww - ww1
                     
             if (beta >= log(runif(1))) {

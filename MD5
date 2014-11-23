@@ -1,11 +1,11 @@
-ca71e86056e636f33e90857c2591a8d4 *DESCRIPTION
+7d996829d4459a67e53fbc4eea1d6c09 *DESCRIPTION
 a0783f742145a5d12476c1609435e2db *NAMESPACE
 c65a4a392f7f5205340cea9b9d21ea4b *R/abergm.R
 3c228372e4134d845a2fda5b469d414e *R/bbeta.R
 6d2d9e3544462be97377f520302af6c9 *R/bbeta.output.R
-72c1c7146b822b36e76a41d47fe1cf28 *R/bergm.R
+83132a9e3683a7f3787cf116cd263286 *R/bergm.R
 9c89aad72e93dadcd3c162619049e974 *R/bergm.output.R
-14a79e08e8403cfbb4cf12f564c3acd9 *R/bergmS.R
+68fa5c85660a8cf3ef94b41c594ca387 *R/bergmS.R
 3722b6a7b3ed9fa2cd0f4b8efe5d103f *R/bergmS.output.R
 b7809fec29001ffeb167ec613303ab2b *R/bgof.R
 d7ac9fd35d1a30287ca54fb424673486 *inst/CITATION
@@ -13,7 +13,7 @@ d7ac9fd35d1a30287ca54fb424673486 *inst/CITATION
 4d9ccc064f8eb8d86e2375515dbbfd1b *man/abergm.Rd
 f233968005284fd0fcc7382c503fc6b3 *man/bbeta.Rd
 92af092f2df3332aff7c261f1b166726 *man/bbeta.output.Rd
-208b1041b1af34c87d598adfa4441cb4 *man/bergm.Rd
+b5015bee00c2586fbba89c2c1302cee7 *man/bergm.Rd
 a3029a84f0fff203bdd9569418a3b989 *man/bergm.output.Rd
 553bbdafa2ce773049367a55bd1fa2b6 *man/bergmS.Rd
 d5d1b56ee775981ee21a586cdfda2e7b *man/bergmS.output.Rd

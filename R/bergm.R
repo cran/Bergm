@@ -1,5 +1,5 @@
 bergm <- function (formula, 
-                   burn.in=100,
+                   burn.in=10,
                    main.iters=1000,
                    aux.iters=1000, 
                    m.prior = NULL, 
@@ -33,7 +33,9 @@ bergm <- function (formula,
         sigma.epsilon <- diag(gamma, Clist$nstats)
     }
     Theta <- array(NA, c(main.iters, Clist$nstats, nchains))
-    theta <- matrix(runif(Clist$nstats * nchains, min = -0.1, max = 0.1), Clist$nstats, nchains)
+    # MPLE as starting point
+    theta <- matrix(runif(Clist$nstats * nchains, min = -0.001, max = 0.001), Clist$nstats, nchains) +
+             matrix(rep(ergm(formula, estimate = "MPLE")[[1]],nchains),Clist$nstats,nchains)
     acc.counts <- rep(0L, nchains)
     theta1 <- rep(NA, Clist$nstats)
     tot.iters <- burn.in + main.iters
@@ -51,11 +53,11 @@ bergm <- function (formula,
                           sigma = sigma.prior,
                           log=TRUE)
                           
-            delta <- ergm.mcmcslave(Clist, 
+            delta <- as.numeric(ergm.mcmcslave(Clist, 
                                     MHproposal, 
                                     eta0 = theta1, 
                                     control, 
-                                    verbose = FALSE)$s
+                                    verbose = FALSE)$s)
                                     
             beta <- (theta[, h] - theta1) %*% delta + pr[1] - pr[2]
             
