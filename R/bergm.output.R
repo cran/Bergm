@@ -3,11 +3,11 @@
 #' This function returns the posterior parameter density estimate 
 #' and creates simple diagnostic plots for the MCMC produced from a fit.
 #'
-#' @param x an \code{R} object of class \code{bergm} 
+#' @param x an \code{R} object of class \code{bergm}, \code{pseudo.bergm}, 
 #' or \code{calibrate.bergm}
 #'
 #' @param ... additional arguments, to be passed to lower-level functions.
-#' 
+#'
 #' @examples
 #' # Load the florentine marriage network
 #' data(florentine)
@@ -21,25 +21,24 @@
 #'                gamma = 1)
 #'
 #' # MCMC diagnostics and posterior summaries:
-#'
+#' 
 #' bergm.output(p.flo)
-#'
-#' @import coda
-#' @import ergm
 #' 
 #' @export
-#'
+#' 
 
-bergm.output <- function (x, ...) {
-  # From bergm()
+bergm.output <- function(x, ...) {
+  
   if (class(x) == "bergm") {
     if (x$nchains > 1) {
       x$AR <- mean(x$AR)
+      FF <- mcmc(apply(x$Theta, 2, cbind))
     } else {
+      FF <- mcmc(x$Theta)
       rates <- matrix(x$AR, 1, x$dim)
     }
-  }
-  FF <- mcmc(x$Theta)
+    
+  } else FF <- mcmc(x$Theta)
   
   cat("\n", "Posterior Density Estimate for Model: y ~", paste(x$formula[3]), "\n", "\n")
 

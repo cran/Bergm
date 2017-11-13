@@ -6,8 +6,7 @@
 #' to diagnose the Bayesian goodness-of-fit of 
 #' exponential random graph models.
 #'
-#' @param x an \code{R} object of class \code{bergm} or 
-#' \code{calibrate.bergm}.
+#' @param x an \code{R} object of class \code{bergm}, \code{pseudo.bergm} or \code{calibrate.bergm}.
 #'
 #' @param directed logical; TRUE if the observed graph is directed.
 #' 
@@ -45,11 +44,11 @@
 #' to be passed to lower-level functions.
 #' 
 #' @references
-#' Caimo, A. and Friel, N. (2011), 'Bayesian Inference for Exponential Random Graph Models,' 
-#' Social Networks, 33(1), 41 - 55. \url{http://arxiv.org/abs/1007.5192}
+#' Caimo, A. and Friel, N. (2011), "Bayesian Inference for Exponential Random Graph Models," 
+#' Social Networks, 33(1), 41-55. \url{http://arxiv.org/abs/1007.5192}
 #' 
-#' Caimo, A. and Friel, N. (2014), 'Bergm: Bayesian Exponential Random Graphs in R,' 
-#' Journal of Statistical Software, 61(2), 1 - 25. \url{jstatsoft.org/v61/i02}
+#' Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R," 
+#' Journal of Statistical Software, 61(2), 1-25. \url{jstatsoft.org/v61/i02}
 #'
 #' @examples
 #' # Load the florentine marriage network
@@ -63,7 +62,6 @@
 #'                main.iters = 500,
 #'                gamma = 1)
 #'
-#'
 #' # Bayesian goodness-of-fit test:
 #'
 #' bgof(p.flo,
@@ -73,13 +71,9 @@
 #'      n.dist = 9,
 #'      n.esp = 6)
 #'
-#'
-#' @import network
-#' @import ergm
-#'
 #' @export
 #' 
-#' @seealso \code{\link{bergm}}, \code{\link{calibrate.bergm}}.
+#' 
 
 bgof <- function(x,
                  directed=FALSE,

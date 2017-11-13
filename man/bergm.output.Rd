@@ -7,7 +7,7 @@
 bergm.output(x, ...)
 }
 \arguments{
-\item{x}{an \code{R} object of class \code{bergm} 
+\item{x}{an \code{R} object of class \code{bergm}, \code{pseudo.bergm}, 
 or \code{calibrate.bergm}}
 
 \item{...}{additional arguments, to be passed to lower-level functions.}

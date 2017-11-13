@@ -28,7 +28,7 @@
 #' By default set to twice the model dimension (number of model terms).
 #' If the model is one-dimensional, \code{nchains} = 1.
 #'
-#' @param gamma scalar; parallel ADS move factor.
+#' @param gamma scalar; ``parallel ADS move factor''.
 #' If the model is one-dimensional, \code{nchains} = 1 and
 #' \code{gamma} = \code{sigma.espilon}
 #' and is used as the variance of the Normal proposal distribution.
@@ -42,28 +42,11 @@
 #' @param ... additional arguments, to be passed to lower-level functions.
 #'
 #' @references
-#' Caimo, A. and Friel, N. (2011), 'Bayesian Inference for Exponential Random Graph Models,' 
-#' Social Networks, 33(1), 41 - 55. \url{http://arxiv.org/abs/1007.5192}
+#' Caimo, A. and Friel, N. (2011), "Bayesian Inference for Exponential Random Graph Models," 
+#' Social Networks, 33(1), 41-55. \url{http://arxiv.org/abs/1007.5192}
 #' 
-#' Caimo, A. and Friel, N. (2014), 'Bergm: Bayesian Exponential Random Graphs in R,' 
-#' Journal of Statistical Software, 61(2), 1 - 25. \url{jstatsoft.org/v61/i02}
-#'
-#' @examples
-#' # Load the florentine marriage network
-#' data(florentine)
-#'
-#' # Posterior parameter estimation:
-#'
-#' p.flo <- bergm(formula = flomarriage ~ edges + kstar(2),
-#'                burn.in = 50,
-#'                aux.iters = 500,
-#'                main.iters = 500,
-#'                gamma = 1)
-#'
-#'
-#' @import network
-#' @import ergm
-#' @import mvtnorm
+#' Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R," 
+#' Journal of Statistical Software, 61(2), 1-25. \url{jstatsoft.org/v61/i02}
 #'
 #' @export
 #'

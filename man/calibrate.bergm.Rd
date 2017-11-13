@@ -45,6 +45,7 @@ to one that is approximately sampled from the intractable
 posterior distribution.
 }
 \examples{
+\dontrun{
 # Load the florentine marriage network
 data(florentine)
                                  
@@ -68,9 +69,10 @@ bgof(cpp.flo,
      n.deg = 10,
      n.dist = 9,
      n.esp = 6)
+}
 
 }
 \references{
-Bouranis, L., Friel, N., and Maire, F. (2015), 'Bayesian inference for misspecified exponential
-random graph models,' \url{https://arxiv.org/abs/1510.00934}.
+Bouranis, L., Friel, N., and Maire, F. (2015). Bayesian inference for misspecified exponential
+random graph models. \url{https://arxiv.org/abs/1510.00934}
 }

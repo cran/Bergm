@@ -9,8 +9,7 @@ bgof(x, directed = FALSE, sample.size = 100, aux.iters = 10000,
   n.odeg = NULL, ...)
 }
 \arguments{
-\item{x}{an \code{R} object of class \code{bergm} or 
-\code{calibrate.bergm}.}
+\item{x}{an \code{R} object of class \code{bergm}, \code{pseudo.bergm} or \code{calibrate.bergm}.}
 
 \item{directed}{logical; TRUE if the observed graph is directed.}
 
@@ -66,7 +65,6 @@ p.flo <- bergm(flomarriage ~ edges + kstar(2),
                main.iters = 500,
                gamma = 1)
 
-
 # Bayesian goodness-of-fit test:
 
 bgof(p.flo,
@@ -76,15 +74,11 @@ bgof(p.flo,
      n.dist = 9,
      n.esp = 6)
 
-
 }
 \references{
-Caimo, A. and Friel, N. (2011), 'Bayesian Inference for Exponential Random Graph Models,' 
-Social Networks, 33(1), 41 - 55. \url{http://arxiv.org/abs/1007.5192}
+Caimo, A. and Friel, N. (2011), "Bayesian Inference for Exponential Random Graph Models," 
+Social Networks, 33(1), 41-55. \url{http://arxiv.org/abs/1007.5192}
 
-Caimo, A. and Friel, N. (2014), 'Bergm: Bayesian Exponential Random Graphs in R,' 
-Journal of Statistical Software, 61(2), 1 - 25. \url{jstatsoft.org/v61/i02}
-}
-\seealso{
-\code{\link{bergm}}, \code{\link{calibrate.bergm}}.
+Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R," 
+Journal of Statistical Software, 61(2), 1-25. \url{jstatsoft.org/v61/i02}
 }
