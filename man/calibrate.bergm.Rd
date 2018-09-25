@@ -2,18 +2,18 @@
 % Please edit documentation in R/calibrate.bergm.R
 \name{calibrate.bergm}
 \alias{calibrate.bergm}
-\title{Calibrating misspecified ERGMs for Bayesian parameter inference}
+\title{Calibrating misspecified Bayesian ERGMs}
 \usage{
-calibrate.bergm(ergm.formula, iters = 500, a = 0.001, alpha = 0,
+calibrate.bergm(formula, iters = 500, a = 0.001, alpha = 0,
   aux.iters = 5000, noisy.nsim = 400, noisy.thin = 50,
   prior.mean = NULL, prior.sigma = NULL, thin = 1, mcmc = 40000,
   burnin = 10000, tunePL = 1)
 }
 \arguments{
-\item{ergm.formula}{formula; an \code{R} formula object,
+\item{formula}{formula; an \code{\link[ergm]{ergm}} formula object,
 of the form  <network> ~ <model terms>
-where <network> is a \code{\link{network}} object
-and <model terms> are \code{\link{ergm-terms}}.}
+where <network> is a \code{\link[network]{network}} object
+and <model terms> are \code{ergm-terms}.}
 
 \item{iters}{count; Iterations for the Robbins-Monro stochastic approximation algorithm.}
 
@@ -55,7 +55,7 @@ cpp.flo <- calibrate.bergm(flomarriage ~ edges + kstar(2),
                            aux.iters = 3000,
                            mcmc = 10000,  
                            burnin = 500,
-                           tunePL = 2)
+                           tunePL = 2.5)
                                                    
 # MCMC diagnostics and posterior summaries:
 
@@ -73,6 +73,7 @@ bgof(cpp.flo,
 
 }
 \references{
-Bouranis, L., Friel, N., and Maire, F. (2015). Bayesian inference for misspecified exponential
-random graph models. \url{https://arxiv.org/abs/1510.00934}
+Bouranis, L., Friel, N., & Maire, F. (2017). Efficient Bayesian inference for exponential 
+random graph models by correcting the pseudo-posterior distribution. 
+Social Networks, 50, 98-108.\url{https://arxiv.org/abs/1510.00934}
 }
