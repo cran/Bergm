@@ -4,46 +4,47 @@
 \alias{bergm}
 \title{Parameter estimation for Bayesian ERGMs}
 \usage{
-bergm(formula, burn.in = 100, main.iters = 1000, aux.iters = 1000,
-  prior.mean = NULL, prior.sigma = NULL, nchains = NULL,
-  gamma = 0.5, sigma.epsilon = NULL, ...)
+bergm(formula, prior.mean = NULL, prior.sigma = NULL, burn.in = 100,
+  main.iters = 1000, aux.iters = 1000, nchains = NULL, gamma = 0.5,
+  V.proposal = 0.0025, startVals = NULL, ...)
 }
 \arguments{
-\item{formula}{formula; an \code{\link[ergm]{ergm}} formula object,
+\item{formula}{formula; 
+an \code{\link[ergm]{ergm}} formula object,
 of the form  <network> ~ <model terms>
 where <network> is a \code{\link[network]{network}} object
 and <model terms> are \code{ergm-terms}.}
 
-\item{burn.in}{count; number of burn-in iterations at the beginning of an MCMC run.
-If \code{nchains} > 2,
-it refers to the number of burn-in iterations for every chain of the population.}
-
-\item{main.iters}{count; number of iterations for the MCMC chain(s) excluding burn-in.
-If \code{nchains} > 2,
-it refers to the number of iterations for every chain of the population.}
-
-\item{aux.iters}{count; number of auxiliary iterations used for network simulation.}
-
-\item{prior.mean}{vector; mean vector of the multivariate Normal prior.
+\item{prior.mean}{vector; 
+mean vector of the multivariate Normal prior.
 By default set to a vector of 0's.}
 
-\item{prior.sigma}{square matrix; variance/covariance matrix for the multivariate Normal prior.
+\item{prior.sigma}{square matrix; 
+variance/covariance matrix for the multivariate Normal prior.
 By default set to a diagonal matrix with every diagonal entry equal to 100.}
 
-\item{nchains}{count; number of chains of the population MCMC.
-By default set to twice the model dimension (number of model terms).
-If the model is one-dimensional, \code{nchains} = 1.}
+\item{burn.in}{count; 
+number of burn-in iterations for every chain of the population.}
 
-\item{gamma}{scalar; ``parallel ADS move factor''.
-If the model is one-dimensional, \code{nchains} = 1 and
-\code{gamma} = \code{sigma.espilon}
-and is used as the variance of the Normal proposal distribution.}
+\item{main.iters}{count; 
+number of iterations for every chain of the population.}
 
-\item{sigma.epsilon}{square matrix;
-variance/covariance matrix for the multivariate Normal proposal when \code{nchains} > 2.
-By default set to a diagonal matrix with every diagonal entry equal to 0.0025.
-If the model is one-dimensional, \code{sigma.espilon} = \code{gamma}
-and is used as the variance of the Normal proposal distribution.}
+\item{aux.iters}{count; 
+number of auxiliary iterations used for network simulation.}
+
+\item{nchains}{count; 
+number of chains of the population MCMC.
+By default set to twice the model dimension (number of model terms).}
+
+\item{gamma}{scalar; 
+parallel adaptive direction sampling move factor.}
+
+\item{V.proposal}{count; 
+diagonal entry for the multivariate Normal proposal.
+By default set to 0.0025.}
+
+\item{startVals}{vector;
+optional starting values for the parameter estimation.}
 
 \item{...}{additional arguments, to be passed to lower-level functions.}
 }
@@ -56,25 +57,14 @@ using the approximate exchange algorithm.
 data(florentine)
 
 # Posterior parameter estimation:
-
 p.flo <- bergm(flomarriage ~ edges + kstar(2),
-               burn.in = 50,
-               aux.iters = 500,
-               main.iters = 500,
-               gamma = 1)
+               burn.in    = 50,
+               aux.iters  = 500,
+               main.iters = 1000,
+               gamma      = 1.2)
 
 # Posterior summaries:
-
-bergm.output(p.flo)
-
-# Bayesian goodness-of-fit test:
-
-bgof(p.flo,
-     aux.iters = 500,
-     sample.size = 50,
-     n.deg = 10,
-     n.dist = 9,
-     n.esp = 6)
+summary(p.flo)
 
 }
 \references{
@@ -82,5 +72,5 @@ Caimo, A. and Friel, N. (2011), "Bayesian Inference for Exponential Random Graph
 Social Networks, 33(1), 41-55. \url{http://arxiv.org/abs/1007.5192}
 
 Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R,"
-Journal of Statistical Software, 61(2), 1-25. \url{jstatsoft.org/v61/i02}
+Journal of Statistical Software, 61(2), 1-25. \url{http://jstatsoft.org/v61/i02}
 }
