@@ -4,9 +4,20 @@
 \alias{bergm}
 \title{Parameter estimation for Bayesian ERGMs}
 \usage{
-bergm(formula, prior.mean = NULL, prior.sigma = NULL, burn.in = 100,
-  main.iters = 1000, aux.iters = 1000, nchains = NULL, gamma = 0.5,
-  V.proposal = 0.0025, startVals = NULL, ...)
+bergm(
+  formula,
+  prior.mean = NULL,
+  prior.sigma = NULL,
+  burn.in = 100,
+  main.iters = 1000,
+  aux.iters = 1000,
+  nchains = NULL,
+  gamma = 0.5,
+  V.proposal = 0.0025,
+  startVals = NULL,
+  offset.coef = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{formula; 
@@ -46,6 +57,9 @@ By default set to 0.0025.}
 \item{startVals}{vector;
 optional starting values for the parameter estimation.}
 
+\item{offset.coef}{vector;
+A vector of coefficients for the offset terms.}
+
 \item{...}{additional arguments, to be passed to lower-level functions.}
 }
 \description{
@@ -69,8 +83,8 @@ summary(p.flo)
 }
 \references{
 Caimo, A. and Friel, N. (2011), "Bayesian Inference for Exponential Random Graph Models,"
-Social Networks, 33(1), 41-55. \url{http://arxiv.org/abs/1007.5192}
+Social Networks, 33(1), 41-55. \url{https://arxiv.org/abs/1007.5192}
 
 Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R,"
-Journal of Statistical Software, 61(2), 1-25. \url{http://jstatsoft.org/v61/i02}
+Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/article/view/v061i02}
 }

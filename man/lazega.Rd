@@ -4,7 +4,9 @@
 \name{lazega}
 \alias{lazega}
 \title{Lazega lawyers network data}
-\format{An oject of class \code{network}.}
+\format{
+An oject of class \code{network}.
+}
 \source{
 This network dataset comes from a network study of corporate law partnership 
 that was carried out in a Northeastern US corporate law firm 
