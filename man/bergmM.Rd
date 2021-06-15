@@ -77,7 +77,7 @@ using the approximate exchange algorithm.
 data(florentine)
 
 # Create missing data
-set.seed(22101992)
+set.seed(14021994)
 n <- dim(flomarriage[, ])[1]
 missNode <- sample(1:n, 1)
 flomarriage[missNode, ] <- NA
@@ -100,14 +100,13 @@ Caimo, A. and Friel, N. (2011), "Bayesian Inference for Exponential Random Graph
 Social Networks, 33(1), 41-55. \url{https://arxiv.org/abs/1007.5192}
 
 Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R,"
-Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/article/view/v061i02}
+Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/v61/i02}
 
 Koskinen, J.H., Robins, G.L., Pattison, P.E. (2010), "Analysing exponential
-random graph (p-star) models with missing data using bayesian data augmentation,"
+random graph (p-star) models with missing data using Bayesian data augmentation,"
 Statistical Methodology 7(3), 366-384.
 
-Krause, R.W., Huisman, M., Steglich, C., Snijders, T.A. (2018), "Missing network
-data a comparison of different imputation methods," Proceedings of the 2018
-IEEE/ACM International Conference on Advances in Social Networks Analysis and
-Mining 2018.
+Krause, R.W., Huisman, M., Steglich, C., Snijders, T.A. (2020), "Missing data in 
+cross-sectional networks-An extensive comparison of missing data treatment methods", 
+Social Networks 62: 99-112.
 }

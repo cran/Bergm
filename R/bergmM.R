@@ -52,16 +52,15 @@
 #' Social Networks, 33(1), 41-55. \url{https://arxiv.org/abs/1007.5192}
 #'
 #' Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R,"
-#' Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/article/view/v061i02}
+#' Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/v61/i02}
 #'
 #' Koskinen, J.H., Robins, G.L., Pattison, P.E. (2010), "Analysing exponential
-#' random graph (p-star) models with missing data using bayesian data augmentation,"
+#' random graph (p-star) models with missing data using Bayesian data augmentation,"
 #' Statistical Methodology 7(3), 366-384.
 #'
-#' Krause, R.W., Huisman, M., Steglich, C., Snijders, T.A. (2018), "Missing network
-#' data a comparison of different imputation methods," Proceedings of the 2018
-#' IEEE/ACM International Conference on Advances in Social Networks Analysis and
-#' Mining 2018.
+#' Krause, R.W., Huisman, M., Steglich, C., Snijders, T.A. (2020), "Missing data in 
+#' cross-sectional networks-An extensive comparison of missing data treatment methods", 
+#' Social Networks 62: 99-112.
 #'
 #' @examples
 #' \dontrun{
@@ -69,7 +68,7 @@
 #' data(florentine)
 #' 
 #' # Create missing data
-#' set.seed(22101992)
+#' set.seed(14021994)
 #' n <- dim(flomarriage[, ])[1]
 #' missNode <- sample(1:n, 1)
 #' flomarriage[missNode, ] <- NA
@@ -102,8 +101,7 @@ bergmM <- function(formula,
                    offset.coef = NULL,
                    nImp = NULL,
                    missingUpdate = NULL,
-                   ...)
-{
+                   ...) {
   if (is.null(seed))
     set.seed(sample(1:999, 1))
   else set.seed(seed)
@@ -111,14 +109,20 @@ bergmM <- function(formula,
   model <- ergm_model(formula, y)
   sy <- summary(formula)
   dim <- length(sy)
+  
   if (dim == 1) {stop("Model dimension must be greater than 1")}
+  
   if (!is.null(offset.coef)) {
     if (any(offset.coef %in% c(Inf,-Inf,NaN,NA))) {
-      stop("Inf,-Inf,NaN,NA are not allowed for offset.coef. \n If Inf or -Inf are required use large values instead (e.g., 1000 or -1000).")
+      stop("Inf,-Inf,NaN,NA are not allowed for offset.coef. \n 
+           If Inf or -Inf are required use large values instead (e.g., 1000 or -1000).")
     }
   }
-  if (!all(is.na(as.matrix.network(y)))) {
-        print("Network has no missing data. Use bergm() for faster estimation instead.")}
+  
+  if (!any(is.na(as.matrix.network(y)))) {
+    print("Network has no missing data. Use bergm() for faster estimation instead.")
+  }
+  
   impNets <- NULL
   if (!is.null(nImp)) {
     nImp <- max(0, min(nImp, main.iters))
@@ -126,23 +130,43 @@ bergmM <- function(formula,
     impIter <- 1
     impNets <- vector("list", nImp)
   }
+  
   missingTies <- matrix(0, y$gal$n, y$gal$n)
   missingTies[is.na(as.matrix.network(y))] <- 1
   missingTies <- as.edgelist(as.network(missingTies), n = y$gal$n)
+  
   if (is.null(missingUpdate)) {
     missingUpdate <- sum(is.na(as.matrix.network(y)))
   }
-  Clist <- ergm.Cprepare(y, model)
-  control <- control.ergm(MCMC.burnin = aux.iters, MCMC.interval = 1,
+  
+  
+  impNet <- y
+  f <- as.character(formula)
+  currentFormula <- formula(paste("impNet", f[3:length(f)],
+                                  sep = " ~ "))
+  
+  y0 <- simulate(currentFormula,
+                 coef        = rep(0, dim),
+                 nsim        = 1,
+                 control     = control.simulate(MCMC.burnin = 1, # !!!
+                                                MCMC.interval = 1),
+                 return.args = "ergm_state")$object
+  
+  control <- control.ergm(MCMC.burnin = aux.iters, 
+                          MCMC.interval = 1,
                           MCMC.samplesize = 1)
-
+  
   if (!is.null(control$init)) {
     if (length(control$init) != length(model$etamap$offsettheta)) {
       stop(paste("Invalid starting parameter vector control$init:",
-                 "wrong number of parameters.", "If you are passing output from another ergm run as control$init,",
+                 "wrong number of parameters.", 
+                 "If you are passing output from another ergm run as control$init,",
                  "in a model with curved terms, see help(enformulate.curved)."))
     }
-  } else {control$init <- rep(NA, length(model$etamap$offsettheta))}
+  } else {
+    control$init <- rep(NA, length(model$etamap$offsettheta))
+  }
+  
   if (!is.null(offset.coef)) {
     if (length(control$init[model$etamap$offsettheta]) !=
         length(offset.coef)) {
@@ -152,14 +176,18 @@ bergmM <- function(formula,
            " got ", length(offset.coef), ".")}
     control$init[model$etamap$offsettheta] <- offset.coef
   }
+  
   if (any(is.na(control$init) & model$etamap$offsettheta)) {
     stop("The model contains offset terms whose parameter values have not been specified:",
          paste.and(model$coef.names[is.na(control$init) |
-                                model$offsettheta]), ".", sep = "") }
-
-
-  proposal <- ergm_proposal(object = ~., constraints = ~.,
-                            arguments = control$MCMC.prop.args, nw = y)
+                                      model$offsettheta]), ".", sep = "") 
+  }
+  
+  proposal <- ergm_proposal(object = ~., 
+                            constraints = ~.,
+                            arguments = control$MCMC.prop.args, 
+                            nw = y)
+  
   if (is.null(prior.mean))
     prior.mean <- rep(0, dim)
   if (is.null(prior.sigma))
@@ -182,37 +210,48 @@ bergmM <- function(formula,
   acc.counts <- rep(0L, nchains)
   theta1 <- rep(NA, dim)
   tot.iters <- burn.in + main.iters
-  impNet <- y
-  f <- as.character(formula)
-  currentFormula <- formula(paste("impNet", f[3:length(f)],
-                                  sep = " ~ "))
+  
+  
   clock.start <- Sys.time()
   message(" > MCMC start")
   for (k in 1:tot.iters) {
     for (h in 1:nchains) {
       theta1 <- theta[, h] + gamma * apply(theta[, sample(seq(1,
-                  nchains)[-h], 2)], 1, diff) + rmvnorm(1, sigma = S.prop)[1,]
-
+                                                              nchains)[-h], 2)], 1, diff) + rmvnorm(1, sigma = S.prop)[1,]
+      
       theta1[model$etamap$offsettheta] <- offset.coef
-
-      delta <- ergm_MCMC_slave(Clist = Clist, proposal = proposal,
-                               eta = theta1, control = control,
-                               verbose = FALSE)$s
-      pr <- dmvnorm(rbind(theta1, theta[, h]), mean = prior.mean,
-                    sigma = prior.sigma, log = TRUE)
-      beta <- (theta[, h] - theta1) %*% t(delta) + pr[1] -
-        pr[2]
+      
+      delta <- ergm_MCMC_sample(y0,
+                                theta   = theta1,
+                                control = control)$stats[[1]][1,] - sy
+      
+      pr <- dmvnorm(rbind(theta1, theta[, h]), 
+                    mean = prior.mean,
+                    sigma = prior.sigma, 
+                    log = TRUE)
+      
+      beta <- (theta[, h] - theta1) %*% delta + pr[1] - pr[2]
+      
       if (beta >= log(runif(1))) {
         theta[, h] <- theta1
         if (k > burn.in) {
           acc.counts[h] <- acc.counts[h] + 1
         }
-        impNet <- simulate(currentFormula, coef = theta1,
-                           output = "network", basis = y, constraints = ~fixallbut(missingTies),
-                           nsim = 1, control = control.simulate(MCMC.burnin = missingUpdate))
-        y2 <- ergm.getnetwork(currentFormula)
-        model2 <- ergm_model(currentFormula, y2)
-        Clist <- ergm.Cprepare(y2, model2)
+        impNet <- simulate(currentFormula, 
+                           coef = theta1,
+                           output = "network", 
+                           basis = y, 
+                           constraints = ~fixallbut(missingTies),
+                           nsim = 1, 
+                           control = control.simulate(
+                             MCMC.burnin = missingUpdate))
+        
+        y0 <- simulate(currentFormula,
+                       coef        = rep(0, dim),
+                       nsim        = 1,
+                       control     = control.simulate(MCMC.burnin = 1, # !!!
+                                                      MCMC.interval = 1),
+                       return.args = "ergm_state")$object
       }
     }
     if (k > burn.in)
@@ -233,8 +272,14 @@ bergmM <- function(formula,
   names(AR) <- NULL
   ess <- round(effectiveSize(FF), 0)
   names(ess) <- model$coef.names
-  out = list(Time = runtime, formula = formula, specs = model$coef.names,
-             dim = dim, Theta = FF, AR = AR, ess = ess, impNets = impNets)
+  out = list(Time = runtime, 
+             formula = formula, 
+             specs = model$coef.names,
+             dim = dim, 
+             Theta = FF, 
+             AR = AR, 
+             ess = ess, 
+             impNets = impNets)
   class(out) <- "bergm"
   return(out)
 }

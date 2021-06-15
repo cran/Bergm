@@ -46,7 +46,7 @@
 #' Social Networks, 33(1), 41-55. \url{https://arxiv.org/abs/1007.5192}
 #' 
 #' Caimo, A. and Friel, N. (2014), "Bergm: Bayesian Exponential Random Graphs in R," 
-#' Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/article/view/v061i02}
+#' Journal of Statistical Software, 61(2), 1-25. \url{https://www.jstatsoft.org/v61/i02}
 #' 
 #' @examples
 #' \dontrun{
@@ -89,13 +89,15 @@ bgof <- function(x,
 	  	a <- gof(x$formula,
 	  	         coef = FF[i, ],
 	  	         verbose = FALSE,
-	  	         control = control.gof.formula(nsim = 1, MCMC.burnin = aux.iters))
+	  	         control = control.gof.formula(nsim = 2, 
+	  	                                       MCMC.burnin = aux.iters,
+	  	                                       MCMC.interval = 1))
 	  	if (i == 1) A <- as.vector(a$pobs.deg)
-   		A <- cbind(A, as.vector(a$psim.deg))
+   		A <- cbind(A, as.vector(a$psim.deg[2, ]))
   		if (i == 1) B <- as.vector(a$pobs.dist) 
-  		B <- cbind(B,as.vector(a$psim.dist))
+  		B <- cbind(B,as.vector(a$psim.dist[2, ]))
   		if (i == 1) C <- as.vector(a$pobs.espart)
-  		C  <- cbind(C,as.vector(a$psim.espart))
+  		C  <- cbind(C,as.vector(a$psim.espart[2, ]))
   	}
   	if (is.null(n.deg)) n.deg <- dim(A)[1]
   	if (is.null(n.dist)) n.dist <- dim(B)[1] - 1
@@ -157,15 +159,17 @@ bgof <- function(x,
   		         coef = FF[i,],
   		         verbose = FALSE,
   		         GOF = ~ idegree + odegree + espartners + distance,
-  		         control = control.gof.formula(nsim = 1, MCMC.burnin = aux.iters))
+  		         control = control.gof.formula(nsim = 2, 
+  		                                       MCMC.burnin = aux.iters,
+  		                                       MCMC.interval = 1))
   		if (i == 1) A <- as.vector(a$pobs.ideg)
-  		A <- cbind(A, as.vector(a$psim.ideg))
+  		A <- cbind(A, as.vector(a$psim.ideg[2, ]))
   		if (i == 1) AA <- as.vector(a$pobs.odeg)
-  		AA <- cbind(AA, as.vector(a$psim.odeg))
+  		AA <- cbind(AA, as.vector(a$psim.odeg[2, ]))
   		if (i == 1) B <- as.vector(a$pobs.dist) 
-  		B <- cbind(B, as.vector(a$psim.dist))
+  		B <- cbind(B, as.vector(a$psim.dist[2, ]))
   		if (i == 1) C <- as.vector(a$pobs.espart)
-  		C <- cbind(C, as.vector(a$psim.espart))
+  		C <- cbind(C, as.vector(a$psim.espart[2, ]))
   	}
   	if (is.null(n.ideg)) n.ideg <- dim(A)[1]
   	if (is.null(n.odeg)) n.odeg <- dim(AA)[1]
