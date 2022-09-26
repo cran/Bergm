@@ -1,4 +1,4 @@
-e6addfa5308aa0ae4f9bf50e54f7e125 *DESCRIPTION
+cac62f2a94d6856ea2f751e7aa0eb55e *DESCRIPTION
 3e7c6ee83b5ec5627163587539dba103 *NAMESPACE
 591bd82b86e013fadd603102655111d1 *R/Bergm-package.R
 f279ffe5bba7cb29dc616d90961e10f6 *R/bergm.R
@@ -14,7 +14,7 @@ b2b60ed0294e564c1685002a704c89cf *R/plot.bergm.R
 e63395c7f19db14fce4d85adb05e1bf3 *R/summary.bergm.R
 53d6d872b2fab66199f659de25457e0d *README.md
 06efb35d83218f1025b49bb84b180354 *data/lazega.rda
-2919b7ec3cff732da6439a9c95c1db2b *inst/CITATION
+1ca61881a38d18a2aaf8030687c6b59f *inst/CITATION
 f8c1a2d23047164ac26d176d1f4466f6 *man/Bergm-package.Rd
 1f8e667dc3e65a4ef0005e58c1277c44 *man/bergm.Rd
 e1d818f01cfd203d9deeb094e6a2ea38 *man/bergmC.Rd
