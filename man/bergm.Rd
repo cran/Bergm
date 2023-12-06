@@ -75,7 +75,7 @@ data(florentine)
 p.flo <- bergm(flomarriage ~ edges + kstar(2),
                burn.in    = 50,
                aux.iters  = 500,
-               main.iters = 1000,
+               main.iters = 3000,
                gamma      = 1.2)
 
 # Posterior summaries:
