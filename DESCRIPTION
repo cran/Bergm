@@ -1,26 +1,40 @@
 Type: Package
 Package: Bergm
 Title: Bayesian Exponential Random Graph Models
-Version: 5.0.7
-Date: 2023-12-06
-Author: Alberto Caimo [aut, cre], Lampros Bouranis [aut], Robert Krause
-    [aut] Nial Friel [ctb]
-Maintainer: Alberto Caimo <alberto.caimo1@ucd.ie>
+Version: 6.0.0
+Date: 2026-10-18
+Authors@R: c(
+    person("Alberto", "Caimo", email = "alberto.caimo1@ucd.ie", role = c("aut", "cre")),
+    person("Lampros", "Bouranis", role = "aut"),
+    person("Robert", "Krause", role = "aut"),
+    person("Isabella", "Gollini", role = "aut"),
+    person("Nial", "Friel", role = "ctb"))
 Description: Bayesian analysis for exponential random graph models using
-    advanced computational algorithms. More information can be found at:
+    advanced computational algorithms: the approximate exchange algorithm
+    with adaptive direction sampling (optionally adaptive, delayed-acceptance
+    and parallel), calibrated pseudo-posteriors, Bayesian
+    data augmentation for missing network data, and Bayesian goodness-of-fit
+    diagnostics. More information can be found at:
     <https://acaimo.github.io/Bergm/>.
 License: GPL (>= 2)
 URL: https://acaimo.github.io/Bergm/
-Depends: ergm, R (>= 4.1)
-Imports: coda, graphics, grDevices, Matrix, matrixcalc, MCMCpack,
-        mvtnorm, network, Rglpk, statnet.common, stats, utils
+Depends: ergm (>= 4.2.3), R (>= 4.1)
+Imports: coda, graphics, grDevices, mice, network, parallel, Rcpp,
+        stats, utils
+LinkingTo: Rcpp
+Suggests: spelling, testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.3
-Suggests: spelling
-NeedsCompilation: no
-Packaged: 2023-12-06 11:58:10 UTC; albertocaimo
+RoxygenNote: 7.3.1
+NeedsCompilation: yes
+Packaged: 2026-10-27 14:18:08 UTC; albertocaimo
+Author: Alberto Caimo [aut, cre],
+  Lampros Bouranis [aut],
+  Robert Krause [aut],
+  Isabella Gollini [aut],
+  Nial Friel [ctb]
+Maintainer: Alberto Caimo <alberto.caimo1@ucd.ie>
 Repository: CRAN
-Date/Publication: 2023-12-06 12:40:02 UTC
+Date/Publication: 2026-10-27 15:00:18 UTC

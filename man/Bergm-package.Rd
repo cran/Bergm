@@ -6,7 +6,34 @@
 \alias{Bergm}
 \title{Bayesian exponential random graph models}
 \description{
-\code{Bergm} provides a range of tools to analyse 
-Bayesian exponential random graph models using advanced 
-computational methods.
+\code{Bergm} provides a range of tools to analyse
+Bayesian exponential random graph models using advanced
+computational methods: parameter estimation via the approximate exchange
+algorithm (\code{\link{bergm}}), calibrated pseudo-posteriors
+(\code{\link{bergmC}}), adjusted pseudolikelihoods (\code{\link{ergmAPL}}),
+model evidence estimation (\code{\link{evidence}}), missing data imputation
+(\code{\link{bergmM}}) and Bayesian goodness-of-fit (\code{\link{bgof}}).
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://acaimo.github.io/Bergm/}
+}
+
+}
+\author{
+\strong{Maintainer}: Alberto Caimo \email{alberto.caimo1@ucd.ie}
+
+Authors:
+\itemize{
+  \item Lampros Bouranis
+  \item Robert Krause
+}
+
+Other contributors:
+\itemize{
+  \item Nial Friel [contributor]
+}
+
+}
+\keyword{internal}
